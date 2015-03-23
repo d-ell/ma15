@@ -1,0 +1,34 @@
+Nicht User:
+	-) Browse
+		-) Suchverlauf merken
+	-) login
+	-) signup (über brickset website nicht webservice)
+
+User (Brickset User)
+	-) logout
+	-) browse
+		-) add to own set collection
+		-) add to want set collection
+	-) list own set collection
+		-) delete
+		-) edit
+			-) number, add photos, add notes
+	-) list want set collection
+		-) delete
+		-) edit
+			-) number, add photos, add notes
+	-) statistics
+
+---------------
+
+	-) Settings
+		-) default menü (own collection oder browse)
+	
+	-) background service der anhand der funktion (getRecentlyUpdatedSets) sets mit der whislist (want set collection) abgleicht und bei treffer
+			eine Notification anzeigt
+
+zusätzliche Funktionen:
+	-) import/export
+	-) recommender funktionen
+
+espresso framework für testing (für UI)
