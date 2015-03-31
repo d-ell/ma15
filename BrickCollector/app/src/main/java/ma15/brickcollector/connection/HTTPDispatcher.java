@@ -1,6 +1,7 @@
 package ma15.brickcollector.connection;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -63,6 +65,7 @@ public class HTTPDispatcher {
 
         @Override
         protected String doInBackground(String... params) {
+            // we should also xml parse here ?
             return getSets(params[0], params[1], params[2], params[3]);
         }
 
@@ -126,21 +129,34 @@ public class HTTPDispatcher {
 
                 List<NameValuePair> pairs = new ArrayList<>();
                 pairs.add(new BasicNameValuePair("apiKey", key));
-                if (query != null && !query.isEmpty()) {
-                    pairs.add(new BasicNameValuePair("query", query));
-                }
-                if (theme != null && !theme.isEmpty()) {
-                    pairs.add(new BasicNameValuePair("theme", theme));
-                }
-                if (year != null && !year.isEmpty()) {
-                    pairs.add(new BasicNameValuePair("year", year));
-                }
-                if (user_hash != null && !user_hash.isEmpty()) {
-                    pairs.add(new BasicNameValuePair("userHash", user_hash));
-                }
+                pairs.add(new BasicNameValuePair("userHash", user_hash));
+                pairs.add(new BasicNameValuePair("query", query));
+                pairs.add(new BasicNameValuePair("theme", theme));
+                pairs.add(new BasicNameValuePair("subtheme", ""));
+                pairs.add(new BasicNameValuePair("setNumber", ""));
+                pairs.add(new BasicNameValuePair("year", year));
+                pairs.add(new BasicNameValuePair("owned", ""));
+                pairs.add(new BasicNameValuePair("wanted", ""));
+                pairs.add(new BasicNameValuePair("orderBy", ""));
+                pairs.add(new BasicNameValuePair("pageSize", ""));
+                pairs.add(new BasicNameValuePair("pageNumber", ""));
+                pairs.add(new BasicNameValuePair("userName", ""));
+
+                UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
+                long length = urlEncodeEntity.getContentLength();
+                httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+                httppost.setHeader("Content-Length", String.valueOf(length));
                 httppost.setEntity(new UrlEncodedFormEntity(pairs));
 
-                Log.d(TAG, "POST request: " + httppost);
+                /* debugging ***/
+                for(Header head : httppost.getAllHeaders()) {
+                    Log.v(TAG, head.getName() + ":" + head.getValue());
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                httppost.getEntity().writeTo(out);
+                Log.v(TAG, "Entity: " + out.toString());
+                Log.v(TAG, "Entity Length: " + out.toString().length());
+                /* debugging ***/
 
                 HttpResponse httpResponse = client.execute(httppost);
 

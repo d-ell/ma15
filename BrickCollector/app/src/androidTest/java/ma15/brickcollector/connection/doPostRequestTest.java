@@ -1,12 +1,14 @@
 package ma15.brickcollector.connection;
 
+import android.test.AndroidTestCase;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class doPostRequestTest {
+public class doPostRequestTest extends AndroidTestCase {
 
     @Before
     public void setUp() throws Exception {
@@ -20,6 +22,10 @@ public class doPostRequestTest {
 
     @Test
     public void testGetSets() throws Exception {
+        final String QUERY = "Batman";
 
+        HTTPDispatcher.doPostRequest postRequest = new HTTPDispatcher().new doPostRequest(null, null, null);
+        String result = postRequest.getSets(QUERY, null, null, null);
+        assertTrue("Result is not empty.", !result.isEmpty());
     }
 }
