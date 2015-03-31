@@ -2,6 +2,8 @@ package ma15.brickcollector.espresso;
 
 import android.test.ActivityInstrumentationTestCase2;
 
+import ma15.brickcollector.MainActivity;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;

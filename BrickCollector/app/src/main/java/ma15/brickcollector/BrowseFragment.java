@@ -1,6 +1,7 @@
 package ma15.brickcollector;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import ma15.brickcollector.adapter.SetXmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.ConnectionHandler;
 import ma15.brickcollector.connection.HTTPDispatcher;
@@ -181,21 +185,40 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
                         mTheme.getText().toString(),
                         mYear.getText().toString(),
                         null);
-
-                /*
-                ConnectionHandler.getSets(mQuery.getText().toString(),
-                        mTheme.getText().toString(),
-                        mYear.getText().toString(),
-                        null);
-                */
-
                 break;
         }
     }
 
     public void handleResponse(String xml) {
 
+        if(xml.isEmpty()) {
+            Toast.makeText(getActivity(), "XML is empty.", Toast.LENGTH_SHORT).show();
+        }
+
         Toast.makeText(getActivity(), xml, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent().setClass(getActivity().getBaseContext(), ListOnlineFetchedSetsActivity.class);
+
+        // TODO: we should probably do the parsing asynchron
+
+        SetXmlParser xml_parser = new SetXmlParser(xml);
+
+        ArrayList<BrickSet> results = xml_parser.getSets();
+
+
+        // INFO: we want to pass the brickset to the new activity therefore the entity BrickSet must
+        // implement the Parceable interface to pass via params
+        ArrayList<BrickSet> addyExtras = new ArrayList<>();
+
+        for (int i = 0; i < results.size(); i++) {
+             addyExtras.add(results.get(i));
+        }
+
+        if (results.size() == 0) {
+            Toast.makeText(getActivity(), "Nothing to display.", Toast.LENGTH_SHORT).show();
+        }
+
+        intent.putParcelableArrayListExtra("mylist", addyExtras);
 
         /*
 
