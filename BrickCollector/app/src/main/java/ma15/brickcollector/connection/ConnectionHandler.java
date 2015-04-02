@@ -45,6 +45,7 @@ public final class ConnectionHandler {
 
             String result = EntityUtils.toString(httpResponse.getEntity());
 
+            Log.d(TAG, "Key: " + key);
             Log.d(TAG, result);
 
             if (result != null && result.length() > 0) {
