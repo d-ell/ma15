@@ -5,4 +5,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- added -->
+    <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="android:maxHeight">22dip</item>
+    </style>
+
+    <style name="foodRatingBarBig" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstarsbig</item>
+        <item name="android:minHeight">44dip</item>
+        <item name="android:maxHeight">44dip</item>
+    </style>
+
+    <color name="white_opaque">#FFFFFFFF</color>
+    <color name="pitch_black">#FF000000</color>
+    <!-- added -->
+
 </resources>
