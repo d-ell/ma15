@@ -1,4 +1,4 @@
-package ma15.brickcollector.espresso;
+package ma15.brickcollector.uiTest_espresso;
 
 import android.test.ActivityInstrumentationTestCase2;
 

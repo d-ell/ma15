@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import ma15.brickcollector.BrickSet;
@@ -47,15 +48,18 @@ public class OnlineFetchedSetsAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.list_row, null);
  
-        TextView title = (TextView) vi.findViewById(R.id.title); // title
-        ImageView thumb_image = (ImageView) vi.findViewById(R.id.list_image); // thumb image
+        TextView title = (TextView) vi.findViewById(R.id.title);
+        TextView pieces = (TextView) vi.findViewById(R.id.pieces);
+        ImageView thumb_image = (ImageView) vi.findViewById(R.id.list_image);
+        RatingBar ratingbar = (RatingBar)vi.findViewById(R.id.ratingBar_local);
 
         BrickSet brickSet = data.get(position);
- 
-        // Setting all values in listview
-        // title.setText(brickSet.getTitle());
-        
-        imageLoader.DisplayImage(brickSet.getCover(), thumb_image);
+
+        title.setText(brickSet.getNumber() + ": " + brickSet.getName());
+        pieces.setText(activity.getResources().getString(R.string.pieces) + ": " + brickSet.getPieces());
+        ratingbar.setRating(Float.valueOf(brickSet.getRating()));
+
+        imageLoader.DisplayImage(brickSet.getThumbnailURL(), thumb_image);
         return vi;
     }
 }

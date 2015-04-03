@@ -192,7 +192,7 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
     public void handleResponse(String xml) {
 
         if(xml.isEmpty()) {
-            Toast.makeText(getActivity(), "XML is empty.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
         }
 
         Toast.makeText(getActivity(), xml, Toast.LENGTH_SHORT).show();
@@ -201,9 +201,10 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
 
         // TODO: we should probably do the parsing asynchron
 
-        SetXmlParser xml_parser = new SetXmlParser(xml);
-
-        ArrayList<BrickSet> results = xml_parser.getSets();
+        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
+        if(results == null || results.isEmpty()) {
+            Toast.makeText(getActivity(), "Could not find any data.", Toast.LENGTH_SHORT).show();
+        }
 
 
         // INFO: we want to pass the brickset to the new activity therefore the entity BrickSet must
@@ -219,6 +220,7 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
         }
 
         intent.putParcelableArrayListExtra("mylist", addyExtras);
+        startActivity(intent);
 
         /*
 

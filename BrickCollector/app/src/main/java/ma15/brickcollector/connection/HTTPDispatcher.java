@@ -25,7 +25,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 
@@ -143,12 +146,13 @@ public class HTTPDispatcher {
                 pairs.add(new BasicNameValuePair("userName", ""));
 
                 UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
-                long length = urlEncodeEntity.getContentLength();
-                httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-                httppost.setHeader("Content-Length", String.valueOf(length));
-                httppost.setEntity(new UrlEncodedFormEntity(pairs));
+                //long length = urlEncodeEntity.getContentLength();
+                //httppost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
+                //httppost.setHeader(HTTP.CONTENT_LEN, String.valueOf(length));
+                httppost.setEntity(urlEncodeEntity);
 
                 /* debugging ***/
+                Log.v(TAG, httppost.toString());
                 for(Header head : httppost.getAllHeaders()) {
                     Log.v(TAG, head.getName() + ":" + head.getValue());
                 }
@@ -158,7 +162,7 @@ public class HTTPDispatcher {
                 Log.v(TAG, "Entity Length: " + out.toString().length());
                 /* debugging ***/
 
-                HttpResponse httpResponse = client.execute(httppost);
+                HttpResponse httpResponse = client.execute(httppost, new BasicHttpContext());
 
                 String result = EntityUtils.toString(httpResponse.getEntity());
 

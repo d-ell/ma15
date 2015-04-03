@@ -28,4 +28,13 @@ public class doPostRequestTest extends AndroidTestCase {
         String result = postRequest.getSets(QUERY, null, null, null);
         assertTrue("Result is not empty.", !result.isEmpty());
     }
+
+    @Test
+    public void testCheckApiKey() {
+
+        String key = "F1PE-3JWB-BwfC";
+
+        assertEquals(true, ConnectionHandler.checkApiKey(key));
+
+    }
 }

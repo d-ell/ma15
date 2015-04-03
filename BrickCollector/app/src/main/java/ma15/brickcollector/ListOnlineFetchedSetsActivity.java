@@ -29,6 +29,8 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
 
 		list = (ListView) findViewById(R.id.listview);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 		// Getting adapter by passing xml data ArrayList
 		adapter = new OnlineFetchedSetsAdapter(this, sets);
 		list.setAdapter(adapter);

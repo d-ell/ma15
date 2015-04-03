@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BrickCollector</string>
+    <string name="app_name">Brick Collector</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -30,5 +30,7 @@
     <string name="lblTheme">Theme</string>
     <string name="lblYear">Year</string>
     <string name="lblGo">Go!</string>
+    <string name="pieces">Pieces</string>
+    <string name="title_activity_list_online_fetched_sets">Found Sets</string>
 
 </resources>

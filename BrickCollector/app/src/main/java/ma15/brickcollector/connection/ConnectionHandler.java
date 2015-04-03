@@ -53,7 +53,7 @@ public final class ConnectionHandler {
             }
 
         } catch (IOException e) {
-            Log.d(TAG, "IOException");
+            Log.d(TAG, "IOException", e);
         }
 
         return false;
@@ -99,7 +99,7 @@ public final class ConnectionHandler {
             }
 
         } catch (IOException e) {
-            Log.d(TAG, "IOException");
+            Log.d(TAG, "IOException", e);
         }
 
         return false;
