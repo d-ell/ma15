@@ -2,6 +2,7 @@ package ma15.brickcollector;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -43,7 +44,7 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
 
                 Toast.makeText(ListOnlineFetchedSetsActivity.this, "Clicked.", Toast.LENGTH_SHORT).show();
 
-                /*
+
 
 				BrickSet brickSet = null;
 				List<BrickSet> tmp = sets;
@@ -56,10 +57,10 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
 				}
 
 				Intent intent = new Intent(getApplicationContext(),
-						DetailEditMovieActivity.class);
+						DetailSetsActivity.class);
 				// sending data to new activity
-				intent.putExtra("movie", movie);
-				startActivity(intent); */
+				intent.putExtra("set", brickSet);
+				startActivity(intent);
 			}
 		});
 	}

@@ -32,5 +32,25 @@
     <string name="lblGo">Go!</string>
     <string name="pieces">Pieces</string>
     <string name="title_activity_list_online_fetched_sets">Found Sets</string>
+    <string name="title_activity_detail_sets">DetailSetsActivity</string>
+    <string name="detail_rating">Rating:</string>
+    <string name="detail_name">Name:</string>
+    <string name="detail_number">Number (Variant number):</string>
+    <string name="detail_theme">Theme:</string>
+    <string name="detail_subtheme">Subtheme:</string>
+    <string name="detail_year">Year:</string>
+    <string name="detail_pieces">Pieces:</string>
+    <string name="detail_minifigs">Minifigs:</string>
+    <string name="detail_packagingtype">Packaging type:</string>
+    <string name="detail_availability">Availability:</string>
+    <string name="detail_reviewcount">Review count:</string>
+    <string name="detail_price_uk">Retail price (United Kingdom):</string>
+    <string name="detail_price_us">Retail price (United States of America):</string>
+    <string name="detail_price_eu">Retail price (European Union):</string>
+    <string name="detail_price_ca">Retail price (Canada):</string>
+    <string name="detail_price_ca_abbr">CAD</string>
+    <string name="detail_price_uk_abbr">GBP</string>
+    <string name="detail_price_us_abbr">USD</string>
+    <string name="detail_price_eu_abbr">EUR</string>
 
 </resources>
