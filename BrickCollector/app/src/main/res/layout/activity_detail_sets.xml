@@ -6,7 +6,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        >
 
         <ImageView
             android:id="@+id/detail_image"
@@ -63,6 +64,53 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:textStyle="bold" />
+
+        <!-- /////////////////////////////////////////// -->
+        <LinearLayout
+            android:id="@+id/layout_collection"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/lbl_detail_own"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="@string/lbl_detail_own">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/chbx_detail_own"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chbx_detail_own_text" />
+
+                <EditText android:id="@+id/txt_detail_own_quantity"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    />
+            </LinearLayout>
+            <!-- /////////////////////////////////////////// -->
+
+            <TextView
+                android:id="@+id/lbl_detail_wish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:text="@string/lbl_detail_wish" >
+            </TextView>
+
+            <CheckBox android:id="@+id/chbx_detail_wish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chbx_detail_wish_text" />
+        </LinearLayout>
+
 
         <!-- /////////////////////////////////////////// -->
 

@@ -52,5 +52,12 @@
     <string name="detail_price_uk_abbr">GBP</string>
     <string name="detail_price_us_abbr">USD</string>
     <string name="detail_price_eu_abbr">EUR</string>
+    <string name="lblUser">Username</string>
+    <string name="lblPassword">Password</string>
+    <string name="lblLogin">Login</string>
+    <string name="chbx_detail_own_text">Put on my own-list</string>
+    <string name="lbl_detail_own">I own this set</string>
+    <string name="lbl_detail_wish">I want this set</string>
+    <string name="chbx_detail_wish_text">Put on my wishlist</string>
 
 </resources>

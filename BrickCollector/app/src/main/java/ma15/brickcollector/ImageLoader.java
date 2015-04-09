@@ -19,7 +19,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
- 
+
+import ma15.brickcollector.Utils.Util;
+
 public class ImageLoader {
  
     MemoryCache memoryCache = MemoryCache.getInstance();
@@ -80,7 +82,7 @@ public class ImageLoader {
             conn.setInstanceFollowRedirects(true);
             InputStream is=conn.getInputStream();
             OutputStream os = new FileOutputStream(f);
-            Utils.CopyStream(is, os);
+            Util.CopyStream(is, os);
             os.close();
             bitmap = decodeFile(f);
             return bitmap;

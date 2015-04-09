@@ -31,6 +31,8 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import ma15.brickcollector.Utils.Constants;
+
 
 public class HTTPDispatcher {
 
@@ -54,23 +56,221 @@ public class HTTPDispatcher {
     }
 
     // <Params, Progress, Result>
-    public class doPostRequest extends AsyncTask<String, Integer, String> {
+    public class PostRequest extends AsyncTask<String, Integer, String> {
 
         private Callback callback = null;
         private Activity activity = null;
+        private String requestMethod;
 
         private ProgressDialog progressDialog = null;
 
-        public doPostRequest(Activity activity, Callback callback, ProgressBar progress) {
+        public PostRequest(Activity activity, Callback callback, String requestMethod, ProgressBar progress) {
             this.callback = callback;
             this.activity = activity;
+            this.requestMethod = requestMethod;
         }
 
         @Override
         protected String doInBackground(String... params) {
             // we should also xml parse here ?
-            return getSets(params[0], params[1], params[2], params[3]);
+
+            if (requestMethod.equals(Constants.BROWSE)) {
+                return getSets(params[0], params[1], params[2], params[3]);
+            } else if (requestMethod.equals(Constants.LOGIN)) {
+                return getLogin(params[0], params[1]);
+            } else if (requestMethod.equals(Constants.SET_OWN)) {
+                return setCollectionOwn(params[0], params[1], params[2]);
+            } else if (requestMethod.equals(Constants.SET_WANT)) {
+                return setCollectionWant(params[0], params[1], params[2]);
+            } else if (requestMethod.equals(Constants.SET_OWN_QUANTITIY)) {
+                return setCollectionWantQuantity(params[0], params[1], params[2]);
+            }
+
+            return null;
         }
+
+        private String getLogin(String username, String password) {
+
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Constants.BASE_URL + Constants.REQUEST_LOGIN);
+
+                List<NameValuePair> pairs = new ArrayList<>();
+                pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));
+                pairs.add(new BasicNameValuePair("username", username));
+                pairs.add(new BasicNameValuePair("password", password));
+
+                UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
+                httppost.setEntity(urlEncodeEntity);
+
+                /* debugging ***/
+                Log.v(TAG, httppost.toString());
+                for(Header head : httppost.getAllHeaders()) {
+                    Log.v(TAG, head.getName() + ":" + head.getValue());
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                httppost.getEntity().writeTo(out);
+                Log.v(TAG, "Entity: " + out.toString());
+                Log.v(TAG, "Entity Length: " + out.toString().length());
+                /* debugging ***/
+
+                HttpResponse httpResponse = client.execute(httppost, new BasicHttpContext());
+
+                String result = EntityUtils.toString(httpResponse.getEntity());
+
+                Log.d(TAG, "POST result: " + result);
+
+                // dummy for progress
+                publishProgress(100);
+
+                return result;
+
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+            }
+
+            return "";
+
+        }
+
+        private String setCollectionOwn(String userHash, String setID, String own) {
+
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Constants.BASE_URL + Constants.REQUEST_SET_OWN);
+
+                List<NameValuePair> pairs = new ArrayList<>();
+                pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));
+                pairs.add(new BasicNameValuePair("userHash", userHash));
+                pairs.add(new BasicNameValuePair("setID", setID));
+                pairs.add(new BasicNameValuePair("owned", own));
+
+                UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
+                httppost.setEntity(urlEncodeEntity);
+
+                /* debugging ***/
+                Log.v(TAG, httppost.toString());
+                for(Header head : httppost.getAllHeaders()) {
+                    Log.v(TAG, head.getName() + ":" + head.getValue());
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                httppost.getEntity().writeTo(out);
+                Log.v(TAG, "Entity: " + out.toString());
+                Log.v(TAG, "Entity Length: " + out.toString().length());
+                /* debugging ***/
+
+                HttpResponse httpResponse = client.execute(httppost, new BasicHttpContext());
+
+                String result = EntityUtils.toString(httpResponse.getEntity());
+
+                Log.d(TAG, "POST result: " + result);
+
+                // dummy for progress
+                publishProgress(100);
+
+                return result;
+
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+            }
+
+            return "";
+
+        }
+
+        private String setCollectionWantQuantity(String userHash, String setID, String qtyOwned) {
+
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Constants.BASE_URL + Constants.REQUEST_SET_OWN_QUANTITY);
+
+                List<NameValuePair> pairs = new ArrayList<>();
+                pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));
+                pairs.add(new BasicNameValuePair("userHash", userHash));
+                pairs.add(new BasicNameValuePair("setID", setID));
+                pairs.add(new BasicNameValuePair("qtyOwned", qtyOwned));
+
+                UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
+                httppost.setEntity(urlEncodeEntity);
+
+                /* debugging ***/
+                Log.v(TAG, httppost.toString());
+                for(Header head : httppost.getAllHeaders()) {
+                    Log.v(TAG, head.getName() + ":" + head.getValue());
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                httppost.getEntity().writeTo(out);
+                Log.v(TAG, "Entity: " + out.toString());
+                Log.v(TAG, "Entity Length: " + out.toString().length());
+                /* debugging ***/
+
+                HttpResponse httpResponse = client.execute(httppost, new BasicHttpContext());
+
+                String result = EntityUtils.toString(httpResponse.getEntity());
+
+                Log.d(TAG, "POST result: " + result);
+
+                // dummy for progress
+                publishProgress(100);
+
+                return result;
+
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+            }
+
+            return "";
+        }
+
+        private String setCollectionWant(String userHash, String setID, String want) {
+
+            try {
+
+                HttpClient client = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(Constants.BASE_URL + Constants.REQUEST_SET_WANT);
+
+                List<NameValuePair> pairs = new ArrayList<>();
+                pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));
+                pairs.add(new BasicNameValuePair("userHash", userHash));
+                pairs.add(new BasicNameValuePair("setID", setID));
+                pairs.add(new BasicNameValuePair("wanted", want));
+
+                UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
+                httppost.setEntity(urlEncodeEntity);
+
+                /* debugging ***/
+                Log.v(TAG, httppost.toString());
+                for(Header head : httppost.getAllHeaders()) {
+                    Log.v(TAG, head.getName() + ":" + head.getValue());
+                }
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                httppost.getEntity().writeTo(out);
+                Log.v(TAG, "Entity: " + out.toString());
+                Log.v(TAG, "Entity Length: " + out.toString().length());
+                /* debugging ***/
+
+                HttpResponse httpResponse = client.execute(httppost, new BasicHttpContext());
+
+                String result = EntityUtils.toString(httpResponse.getEntity());
+
+                Log.d(TAG, "POST result: " + result);
+
+                // dummy for progress
+                publishProgress(100);
+
+                return result;
+
+            } catch (IOException e) {
+                Log.e(TAG, "IOException", e);
+            }
+
+            return "";
+
+        }
+
 
         @Override
         protected void onProgressUpdate(final Integer... values) {
@@ -80,7 +280,7 @@ public class HTTPDispatcher {
         @Override
         protected void onPostExecute(String xml) {
             progressDialog.dismiss();
-            callback.handleResponse(xml);
+            callback.handleResponse(requestMethod, xml);
 
         }
 
@@ -112,26 +312,19 @@ public class HTTPDispatcher {
         // user cancelled progressdialog => gets called instead of
         // onPostExecute()
         private void handleOnCancelled() {
-            callback.handleResponse(null);
+            callback.handleResponse(null, null);
             progressDialog.dismiss();
         }
 
         public String getSets(String query, String theme, String year, String user_hash) {
 
-            // move this
-            final String key = "F1PE-3JWB-BwfC";
-
-            String url = "http://brickset.com/api/v2.asmx/getSets";
-            // String contentParameter = "apiKey";
-            // int length = contentParameter.length() + key.length() + 1;
-
             try {
 
                 HttpClient client = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(url);
+                HttpPost httppost = new HttpPost(Constants.BASE_URL + Constants.REQUEST_GET_SETS);
 
                 List<NameValuePair> pairs = new ArrayList<>();
-                pairs.add(new BasicNameValuePair("apiKey", key));
+                pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));
                 pairs.add(new BasicNameValuePair("userHash", user_hash));
                 pairs.add(new BasicNameValuePair("query", query));
                 pairs.add(new BasicNameValuePair("theme", theme));
@@ -146,9 +339,6 @@ public class HTTPDispatcher {
                 pairs.add(new BasicNameValuePair("userName", ""));
 
                 UrlEncodedFormEntity urlEncodeEntity = new UrlEncodedFormEntity(pairs);
-                //long length = urlEncodeEntity.getContentLength();
-                //httppost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-                //httppost.setHeader(HTTP.CONTENT_LEN, String.valueOf(length));
                 httppost.setEntity(urlEncodeEntity);
 
                 /* debugging ***/
@@ -173,57 +363,12 @@ public class HTTPDispatcher {
 
                 return result;
 
-                /*
-
-                if (result != null && result.length() > 0) {
-                    return true;
-                } else {
-
-                }*/
-
             } catch (IOException e) {
                 Log.e(TAG, "IOException", e);
             }
 
             return "";
         }
-
-        /*
-		private String getSets(String urlToRead) {
-			URL url;
-			HttpURLConnection conn;
-			BufferedReader rd;
-			String line;
-			final int capacity_estimate = 100;
-			StringBuffer result = new StringBuffer(capacity_estimate);
-
-			try {
-
-				url = new URL(urlToRead);
-				conn = (HttpURLConnection) url.openConnection();
-				conn.setRequestMethod("GET");
-				rd = new BufferedReader(new InputStreamReader(
-						conn.getInputStream()));
-
-				int length = conn.getContentLength();
-				long total = 0;
-
-				while ((line = rd.readLine()) != null) {
-					total += line.length();
-					publishProgress((int) (total * 100 / length));
-					if (isCancelled())
-						return null;
-					result.append(line);
-				}
-
-				rd.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return result.toString();
-		}
-
-	}*/
 
     }
 }

@@ -2,22 +2,42 @@ package ma15.brickcollector;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.adapter.SetXmlParser;
+import ma15.brickcollector.connection.Callback;
+import ma15.brickcollector.connection.HTTPDispatcher;
 
 
-public class DetailSetsActivity extends ActionBarActivity {
+public class DetailSetsActivity extends ActionBarActivity implements Callback {
 
     BrickSet set = null;
     public ImageLoader imageLoader = null;
+
+    final static String TAG = DetailSetsActivity.class.getName();
+    private CheckBox ckbOwn;
+    private CheckBox ckbWant;
+    private EditText txtOwnQuantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_sets);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         set = getIntent().getParcelableExtra("set");
         imageLoader = new ImageLoader(this.getApplicationContext());
@@ -38,6 +58,89 @@ public class DetailSetsActivity extends ActionBarActivity {
         TextView price_us = (TextView) findViewById(R.id.detail_price_us);
         TextView price_eu = (TextView) findViewById(R.id.detail_price_eu);
         TextView price_ca = (TextView) findViewById(R.id.detail_price_ca);
+        ckbOwn = (CheckBox) findViewById(R.id.chbx_detail_own);
+        ckbWant = (CheckBox) findViewById(R.id.chbx_detail_wish);
+        txtOwnQuantity = (EditText) findViewById(R.id.txt_detail_own_quantity);
+
+        LinearLayout collectionLayout = (LinearLayout) findViewById(R.id.layout_collection);
+
+        if (UserManager.getInstance().getUserHash() != null) {
+            setCollectionUIValues();
+
+            ckbOwn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(!HTTPDispatcher.isConnected(DetailSetsActivity.this)) {
+                        Toast.makeText(DetailSetsActivity.this,
+                                "Not connected.", Toast.LENGTH_SHORT)
+                                .show();
+                        return;
+                    }
+
+                    ProgressBar progress = (ProgressBar) DetailSetsActivity.this.findViewById(R.id.progressBar);
+
+                    // start asynchronous search => doGetRequest makes callback
+                    // to handleResponse()
+                    HTTPDispatcher dispatcher = new HTTPDispatcher();
+                    dispatcher.new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN, progress).
+                            execute(UserManager.getInstance().getUserHash(),
+                                    set.getSetID(),
+                                    isChecked ? "1" : "0");
+
+                    txtOwnQuantity.setEnabled(isChecked);
+                }
+            });
+
+            ckbWant.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (!HTTPDispatcher.isConnected(DetailSetsActivity.this)) {
+                        Toast.makeText(DetailSetsActivity.this,
+                                "Not connected.", Toast.LENGTH_SHORT)
+                                .show();
+                        return;
+                    }
+
+                    ProgressBar progress = (ProgressBar) DetailSetsActivity.this.findViewById(R.id.progressBar);
+
+                    // start asynchronous search => doGetRequest makes callback
+                    // to handleResponse()
+                    HTTPDispatcher dispatcher = new HTTPDispatcher();
+                    dispatcher.new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_WANT, progress).
+                            execute(UserManager.getInstance().getUserHash(),
+                                    set.getSetID(),
+                                    isChecked ? "1" : "0");
+                }
+            });
+
+            //TODO: wird nie aufgerufen, da edittext focus nicht verliert
+            txtOwnQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(!hasFocus) {
+                        if(!HTTPDispatcher.isConnected(DetailSetsActivity.this)) {
+                            Toast.makeText(DetailSetsActivity.this,
+                                    "Not connected.", Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
+
+                        ProgressBar progress = (ProgressBar) DetailSetsActivity.this.findViewById(R.id.progressBar);
+
+                        // start asynchronous search => doGetRequest makes callback
+                        // to handleResponse()
+                        HTTPDispatcher dispatcher = new HTTPDispatcher();
+                        dispatcher.new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN_QUANTITIY, progress).
+                                execute(UserManager.getInstance().getUserHash(),
+                                        set.getSetID(),
+                                        txtOwnQuantity.getText().toString());
+                    }
+                }
+            });
+
+        } else {
+            collectionLayout.setVisibility(View.GONE);
+        }
 
         imageLoader.DisplayImage(set.getLargeThumbnailURL(), image);
         ratingbar.setRating(Float.valueOf(set.getRating()));
@@ -74,15 +177,15 @@ public class DetailSetsActivity extends ActionBarActivity {
             price_ca.setText(set.getCARetailPrice() + " " + getResources().getString(R.string.detail_price_ca_abbr));
         }
 
-        /*
+    }
 
-
-
-        private String UKRetailPrice = "";
-        private String USRetailPrice = "";
-        private String CARetailPrice = "";
-        private String EURetailPrice = "";*/
-
+    private void setCollectionUIValues() {
+        txtOwnQuantity.setText(set.getQtyOwned());
+        ckbOwn.setChecked(set.isOwned().toLowerCase().equals("true"));
+        ckbWant.setChecked(set.isWanted().toLowerCase().equals("true"));
+        if(!set.isOwned().toLowerCase().equals("true")) {
+            txtOwnQuantity.setEnabled(false);
+        }
     }
 
 
@@ -93,18 +196,48 @@ public class DetailSetsActivity extends ActionBarActivity {
         return true;
     }
 
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void handleResponse(String requestMethod, String xml) {
+        Log.d(TAG, "Login result: " + xml);
+
+        String xmlResult = SetXmlParser.getXMLResultString(xml);
+        Log.d(TAG, "xml result: " + xmlResult);
+
+        if(xmlResult == null || xmlResult.indexOf(Constants.ERROR) != -1 ||
+                xmlResult.indexOf(Constants.INVALID_KEY) != -1) {
+            this.setCollectionUIValues();
+            return;
+        }
+
+        if (requestMethod.equals(Constants.SET_OWN) && ckbOwn.isChecked()) {
+            txtOwnQuantity.setText("1");
+            set.setOwned("true");
+            set.setQtyOwned("1");
+        } else if (requestMethod.equals(Constants.SET_OWN) && !ckbOwn.isChecked()) {
+            txtOwnQuantity.setText("0");
+            set.setOwned("false");
+            set.setQtyOwned("0");
+        } else if (requestMethod.equals(Constants.SET_WANT)) {
+            set.setWanted(ckbWant.isChecked() ? "true" : "false");
+        } else if (requestMethod.equals(Constants.SET_OWN_QUANTITIY)) {
+            set.setQtyOwned(txtOwnQuantity.getText().toString());
+        }
     }
 }

@@ -2,12 +2,10 @@ package ma15.brickcollector;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +16,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.adapter.SetXmlParser;
 import ma15.brickcollector.connection.Callback;
-import ma15.brickcollector.connection.ConnectionHandler;
 import ma15.brickcollector.connection.HTTPDispatcher;
 
 
@@ -133,18 +131,10 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-//            mListener = (OnFragmentInteractionListener) activity;
             if (getArguments() != null) {
                 mTitle = getArguments().getString(ARG_TITLE);
             }
@@ -158,7 +148,6 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
     }
 
     @Override
@@ -181,17 +170,17 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
                 // start asynchronous search => doGetRequest makes callback
                 // to handleResponse()
                 HTTPDispatcher dispatcher = new HTTPDispatcher();
-                dispatcher.new doPostRequest(getActivity(), this, progress).execute(mQuery.getText().toString(),
+                dispatcher.new PostRequest(getActivity(), this, Constants.BROWSE, progress).execute(mQuery.getText().toString(),
                         mTheme.getText().toString(),
                         mYear.getText().toString(),
-                        null);
+                        UserManager.getInstance().getUserHash());
                 break;
         }
     }
 
-    public void handleResponse(String xml) {
+    public void handleResponse(String requestMethod, String xml) {
 
-        if(xml.isEmpty()) {
+        if (xml.isEmpty()) {
             Toast.makeText(getActivity(), "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
         }
 
@@ -202,7 +191,7 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
         // TODO: we should probably do the parsing asynchron
 
         ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
-        if(results == null || results.isEmpty()) {
+        if (results == null || results.isEmpty()) {
             Toast.makeText(getActivity(), "Could not find any data.", Toast.LENGTH_SHORT).show();
         }
 
@@ -212,7 +201,7 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
         ArrayList<BrickSet> addyExtras = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
-             addyExtras.add(results.get(i));
+            addyExtras.add(results.get(i));
         }
 
         if (results.size() == 0) {
@@ -221,74 +210,6 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
 
         intent.putParcelableArrayListExtra("mylist", addyExtras);
         startActivity(intent);
-
-        /*
-
-        if (html == null) {
-            Toast.makeText(this, "Search cancelled", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        Intent intent = null;
-        Movie movie = null;
-
-        try {
-            // EAN => we can omit the listitems activity
-            if (parsing_method == MOVIE_DETAIL_PARSING) {
-                intent = new Intent().setClass(getBaseContext(),
-                        DetailEditMovieActivity.class);
-
-                MovieDetailHTMLParser html_parser = new MovieDetailHTMLParser(
-                        html);
-                movie = html_parser.getMovie();
-
-                intent.putExtra("movie", movie);
-            }
-            // TITLE SEARCH => show list of movies
-            else if (parsing_method == MOVIE_LIST_PARSING) {
-                intent = new Intent().setClass(getBaseContext(),
-                        ListOnlineFetchedMoviesActivity.class);
-
-                MovieListHTMLParser html_parser = new MovieListHTMLParser(html);
-
-                results = html_parser.getMovies();
-
-                ArrayList<Movie> addyExtras = new ArrayList<Movie>();
-
-                for (int i = 0; i < results.size(); i++) {
-                    if (!results.get(i).getBarcode().equals(""))
-                        addyExtras.add(results.get(i));
-                }
-
-                if (results.size() == 0)
-                    throw new NotParseableException(
-                            "blabla sollte in der ListHTML geworfen werden");
-
-                intent.putParcelableArrayListExtra("mylist", addyExtras);
-            }
-            startActivity(intent);
-        } catch (NotParseableException e) {
-            Toast.makeText(this, "Barcode/Title could not be recognized!",
-                    Toast.LENGTH_SHORT).show();
-        }*/
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
-    /*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }*/
 
 }

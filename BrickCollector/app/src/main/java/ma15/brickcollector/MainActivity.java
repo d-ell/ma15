@@ -61,6 +61,10 @@ public class MainActivity extends ActionBarActivity
             case 0:
                 fragment = BrowseFragment.newInstance(mDrawerTitles[position]);
                 break;
+            case 1:
+                fragment = LoginFragment.newInstance(mDrawerTitles[position]);
+                break;
+
             default:
                 return;
         }

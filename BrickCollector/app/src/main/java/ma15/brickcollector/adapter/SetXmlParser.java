@@ -1,5 +1,6 @@
 package ma15.brickcollector.adapter;
 
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -22,6 +23,8 @@ import ma15.brickcollector.BrickSet;
  */
 public class SetXmlParser {
 
+    final static String TAG = SetXmlParser.class.getName();
+
     private static final String ns = null;
     private static ArrayList<String> tagNames = new ArrayList<>();
 
@@ -31,6 +34,35 @@ public class SetXmlParser {
                 tagNames.add(field.getName());
             }
         }
+    }
+
+    public static String getUserHash(String xml) {
+        return getXMLResultString(xml);
+    }
+
+    public static String getXMLResultString(String xml) {
+        InputStream in = null;
+        try {
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+
+            in = new ByteArrayInputStream(xml.getBytes());
+            parser.setInput(in, null);
+            parser.nextTag();
+            return readTag(parser,"string");
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     public static ArrayList<BrickSet> getSets(String xml) {
