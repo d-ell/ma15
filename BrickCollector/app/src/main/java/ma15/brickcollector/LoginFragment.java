@@ -25,7 +25,7 @@ import ma15.brickcollector.connection.HTTPDispatcher;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
+ * {@link android.view.View.OnClickListener} interface
  * to handle interaction events.
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -141,9 +141,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
 
         if(user_hash == null || user_hash.indexOf(Constants.ERROR) != -1 ||
                 user_hash.indexOf(Constants.INVALID_KEY) != -1) {
-            Toast.makeText(getActivity(), "Login was not successful",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Error: Login was NOT successful",Toast.LENGTH_SHORT).show();
             UserManager.getInstance().setUserHash(null);
             return;
+        } else {
+            Toast.makeText(getActivity(), "Login was successful",Toast.LENGTH_SHORT).show();
+            //TODO: What next, redirect?
         }
 
         UserManager.getInstance().setUserHash(user_hash);

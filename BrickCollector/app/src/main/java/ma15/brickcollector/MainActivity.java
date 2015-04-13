@@ -3,6 +3,7 @@ package ma15.brickcollector;
 import android.app.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,11 +18,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.adapter.SetXmlParser;
+import ma15.brickcollector.connection.Callback;
+import ma15.brickcollector.connection.HTTPDispatcher;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, Callback {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -64,6 +74,18 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 fragment = LoginFragment.newInstance(mDrawerTitles[position]);
                 break;
+            case 2:
+                if(!checkLogin()) {
+                    return;
+                }
+                getSets(true,false);
+                return;
+            case 3:
+                if(!checkLogin()) {
+                    return;
+                }
+                getSets(false,true);
+                return;
 
             default:
                 return;
@@ -72,6 +94,36 @@ public class MainActivity extends ActionBarActivity
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
+    private boolean checkLogin() {
+        if(UserManager.getInstance().getUserHash() == null) {
+            Toast.makeText(this,
+                    "You have to login before you can use this function!", Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+        return true;
+    }
+
+    private void getSets(boolean bOwn, boolean bWant) {
+        if(!HTTPDispatcher.isConnected(this)) {
+            Toast.makeText(this,
+                    "Not connected.", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        ProgressBar progress = (ProgressBar) this.findViewById(R.id.progressBar);
+
+        HTTPDispatcher dispatcher = new HTTPDispatcher();
+        dispatcher.new PostRequest(this, this, Constants.BROWSE, progress).execute("",
+                "",
+                "",
+                UserManager.getInstance().getUserHash(),
+                bOwn ? "1" : "",
+                bWant ? "1" : "");
+
+        return;
+    }
 
     public void onSectionAttached(String title) {
         mTitle = title;
@@ -111,6 +163,38 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void handleResponse(String requestMethod, String xml) {
+        if (xml.isEmpty()) {
+            Toast.makeText(this, "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
+        }
+
+        Intent intent = new Intent().setClass(this.getBaseContext(), ListOnlineFetchedSetsActivity.class);
+
+        // TODO: we should probably do the parsing asynchron
+
+        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
+        if (results == null || results.isEmpty()) {
+            Toast.makeText(this, "Could not find any data.", Toast.LENGTH_SHORT).show();
+        }
+
+
+        // INFO: we want to pass the brickset to the new activity therefore the entity BrickSet must
+        // implement the Parceable interface to pass via params
+        ArrayList<BrickSet> addyExtras = new ArrayList<>();
+
+        for (int i = 0; i < results.size(); i++) {
+            addyExtras.add(results.get(i));
+        }
+
+        if (results.size() == 0) {
+            Toast.makeText(this, "Nothing to display.", Toast.LENGTH_SHORT).show();
+        }
+
+        intent.putParcelableArrayListExtra("mylist", addyExtras);
+        startActivity(intent);
     }
 
     /**

@@ -7,6 +7,8 @@
     <string-array name="drawer_array">
         <item>Browse</item>
         <item>Log In</item>
+        <item>Sets I own</item>
+        <item>Sets I want</item>
         <item>Register</item>
         <item>Settings</item>
     </string-array>
@@ -32,7 +34,7 @@
     <string name="lblGo">Go!</string>
     <string name="pieces">Pieces</string>
     <string name="title_activity_list_online_fetched_sets">Found Sets</string>
-    <string name="title_activity_detail_sets">DetailSetsActivity</string>
+    <string name="title_activity_detail_sets">Set details</string>
     <string name="detail_rating">Rating:</string>
     <string name="detail_name">Name:</string>
     <string name="detail_number">Number (Variant number):</string>

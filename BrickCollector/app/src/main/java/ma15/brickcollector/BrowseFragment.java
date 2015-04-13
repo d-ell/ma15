@@ -25,7 +25,7 @@ import ma15.brickcollector.connection.HTTPDispatcher;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BrowseFragment.OnFragmentInteractionListener} interface
+ * {@link android.view.View.OnClickListener} interface
  * to handle interaction events.
  * Use the {@link BrowseFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -154,9 +154,6 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnGo:
-                Toast.makeText(getActivity(),
-                        "Button Clicked.", Toast.LENGTH_SHORT)
-                        .show();
 
                 if(!HTTPDispatcher.isConnected(getActivity())) {
                     Toast.makeText(getActivity(),
@@ -173,7 +170,9 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
                 dispatcher.new PostRequest(getActivity(), this, Constants.BROWSE, progress).execute(mQuery.getText().toString(),
                         mTheme.getText().toString(),
                         mYear.getText().toString(),
-                        UserManager.getInstance().getUserHash());
+                        UserManager.getInstance().getUserHash(),
+                        "",
+                        "");
                 break;
         }
     }
@@ -183,8 +182,6 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
         if (xml.isEmpty()) {
             Toast.makeText(getActivity(), "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
         }
-
-        Toast.makeText(getActivity(), xml, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent().setClass(getActivity().getBaseContext(), ListOnlineFetchedSetsActivity.class);
 
