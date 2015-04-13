@@ -1,5 +1,6 @@
 package ma15.brickcollector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -10,15 +11,25 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
+import ma15.brickcollector.adapter.SetXmlParser;
+import ma15.brickcollector.connection.Callback;
+import ma15.brickcollector.connection.HTTPDispatcher;
 
-public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
+public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements Callback {
 
 	List<BrickSet> sets = null;
 	ListView list;
 	OnlineFetchedSetsAdapter adapter;
+    String strQuery = null;
+    String strTheme = null;
+    String strYear = null;
+    boolean bOwn = false;
+    boolean bWant = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +37,13 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_sets);
 
-        sets = getIntent().getParcelableArrayListExtra("mylist");
+        //sets = getIntent().getParcelableArrayListExtra("mylist");
+        sets = new ArrayList<BrickSet>();
+        strQuery = getIntent().getStringExtra("query");
+        strTheme = getIntent().getStringExtra("theme");
+        strYear = getIntent().getStringExtra("year");
+        bOwn = getIntent().getBooleanExtra("bOwn",false);
+        bWant = getIntent().getBooleanExtra("bWant",false);
 
 		list = (ListView) findViewById(R.id.listview);
 
@@ -35,6 +52,8 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
 		// Getting adapter by passing xml data ArrayList
 		adapter = new OnlineFetchedSetsAdapter(this, sets);
 		list.setAdapter(adapter);
+
+        list.setOnScrollListener(new EndlessScrollListener(this,0));
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -71,4 +90,44 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity {
 		// getMenuInflater().inflate(R.menu.list_movies, menu);
 		return true;
 	}
+
+    public void loadSets(int pageNumber) {
+        if(!HTTPDispatcher.isConnected(this)) {
+            Toast.makeText(this,
+                    "Not connected.", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        ProgressBar progress = (ProgressBar) findViewById(R.id.progressBar);
+
+        // start asynchronous search => doGetRequest makes callback
+        // to handleResponse()
+        HTTPDispatcher dispatcher = new HTTPDispatcher();
+        dispatcher.new PostRequest(this, this, Constants.BROWSE, progress).execute(strQuery,
+                strTheme,
+                strYear,
+                UserManager.getInstance().getUserHash(),
+                bOwn ? "1" : "",
+                bWant ? "1" : "",
+                Integer.toString(pageNumber));
+    }
+
+    @Override
+    public void handleResponse(String requestMethod, String xml) {
+        if (xml == null || xml.isEmpty()) {
+            Toast.makeText(this, "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
+        }
+
+        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
+        if (results == null || results.isEmpty()) {
+            Toast.makeText(this, "No more data to load.", Toast.LENGTH_SHORT).show();
+        } else {
+            for(BrickSet set : results) {
+                sets.add(set);
+            }
+
+            adapter.notifyDataSetChanged();
+        }
+    }
 }

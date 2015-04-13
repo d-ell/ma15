@@ -30,7 +30,7 @@ import ma15.brickcollector.connection.HTTPDispatcher;
  * Use the {@link BrowseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BrowseFragment extends Fragment implements View.OnClickListener, Callback {
+public class BrowseFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_TITLE = "title";
@@ -155,58 +155,15 @@ public class BrowseFragment extends Fragment implements View.OnClickListener, Ca
         switch (v.getId()) {
             case R.id.btnGo:
 
-                if(!HTTPDispatcher.isConnected(getActivity())) {
-                    Toast.makeText(getActivity(),
-                            "Not connected.", Toast.LENGTH_SHORT)
-                            .show();
-                    return;
-                }
+                Intent intent = new Intent().setClass(getActivity().getBaseContext(), ListOnlineFetchedSetsActivity.class);
+                intent.putExtra("query",mQuery.getText().toString());
+                intent.putExtra("theme",mTheme.getText().toString());
+                intent.putExtra("year",mYear.getText().toString());
+                intent.putExtra("bOwn",false);
+                intent.putExtra("bWant",false);
+                startActivity(intent);
 
-                ProgressBar progress = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-
-                // start asynchronous search => doGetRequest makes callback
-                // to handleResponse()
-                HTTPDispatcher dispatcher = new HTTPDispatcher();
-                dispatcher.new PostRequest(getActivity(), this, Constants.BROWSE, progress).execute(mQuery.getText().toString(),
-                        mTheme.getText().toString(),
-                        mYear.getText().toString(),
-                        UserManager.getInstance().getUserHash(),
-                        "",
-                        "");
                 break;
         }
     }
-
-    public void handleResponse(String requestMethod, String xml) {
-
-        if (xml.isEmpty()) {
-            Toast.makeText(getActivity(), "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
-        }
-
-        Intent intent = new Intent().setClass(getActivity().getBaseContext(), ListOnlineFetchedSetsActivity.class);
-
-        // TODO: we should probably do the parsing asynchron
-
-        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
-        if (results == null || results.isEmpty()) {
-            Toast.makeText(getActivity(), "Could not find any data.", Toast.LENGTH_SHORT).show();
-        }
-
-
-        // INFO: we want to pass the brickset to the new activity therefore the entity BrickSet must
-        // implement the Parceable interface to pass via params
-        ArrayList<BrickSet> addyExtras = new ArrayList<>();
-
-        for (int i = 0; i < results.size(); i++) {
-            addyExtras.add(results.get(i));
-        }
-
-        if (results.size() == 0) {
-            Toast.makeText(getActivity(), "Nothing to display.", Toast.LENGTH_SHORT).show();
-        }
-
-        intent.putParcelableArrayListExtra("mylist", addyExtras);
-        startActivity(intent);
-    }
-
 }

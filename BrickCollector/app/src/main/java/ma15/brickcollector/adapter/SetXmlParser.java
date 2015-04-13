@@ -85,10 +85,15 @@ public class SetXmlParser {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } finally {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally
+        {
             try {
                 in.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

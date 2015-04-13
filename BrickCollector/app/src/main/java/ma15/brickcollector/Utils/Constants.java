@@ -24,6 +24,6 @@ public class Constants {
     public static final String ERROR = "ERROR";
     public static final String INVALID_KEY = "INVALIDKEY";
 
-    public static final String BROWSE_PAGE_SIZE = "999";
+    public static final String BROWSE_PAGE_SIZE = "20";
 
 }

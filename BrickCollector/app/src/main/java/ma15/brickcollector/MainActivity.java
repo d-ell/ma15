@@ -31,7 +31,7 @@ import ma15.brickcollector.connection.HTTPDispatcher;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, Callback {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -105,22 +105,13 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void getSets(boolean bOwn, boolean bWant) {
-        if(!HTTPDispatcher.isConnected(this)) {
-            Toast.makeText(this,
-                    "Not connected.", Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-
-        ProgressBar progress = (ProgressBar) this.findViewById(R.id.progressBar);
-
-        HTTPDispatcher dispatcher = new HTTPDispatcher();
-        dispatcher.new PostRequest(this, this, Constants.BROWSE, progress).execute("",
-                "",
-                "",
-                UserManager.getInstance().getUserHash(),
-                bOwn ? "1" : "",
-                bWant ? "1" : "");
+                Intent intent = new Intent().setClass(getBaseContext(), ListOnlineFetchedSetsActivity.class);
+        intent.putExtra("query","");
+        intent.putExtra("theme","");
+        intent.putExtra("year","");
+        intent.putExtra("bOwn",bOwn);
+        intent.putExtra("bWant",bWant);
+        startActivity(intent);
 
         return;
     }
@@ -163,38 +154,6 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void handleResponse(String requestMethod, String xml) {
-        if (xml.isEmpty()) {
-            Toast.makeText(this, "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
-        }
-
-        Intent intent = new Intent().setClass(this.getBaseContext(), ListOnlineFetchedSetsActivity.class);
-
-        // TODO: we should probably do the parsing asynchron
-
-        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
-        if (results == null || results.isEmpty()) {
-            Toast.makeText(this, "Could not find any data.", Toast.LENGTH_SHORT).show();
-        }
-
-
-        // INFO: we want to pass the brickset to the new activity therefore the entity BrickSet must
-        // implement the Parceable interface to pass via params
-        ArrayList<BrickSet> addyExtras = new ArrayList<>();
-
-        for (int i = 0; i < results.size(); i++) {
-            addyExtras.add(results.get(i));
-        }
-
-        if (results.size() == 0) {
-            Toast.makeText(this, "Nothing to display.", Toast.LENGTH_SHORT).show();
-        }
-
-        intent.putParcelableArrayListExtra("mylist", addyExtras);
-        startActivity(intent);
     }
 
     /**

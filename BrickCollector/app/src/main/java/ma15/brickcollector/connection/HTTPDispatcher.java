@@ -75,7 +75,7 @@ public class HTTPDispatcher {
             // we should also xml parse here ?
 
             if (requestMethod.equals(Constants.BROWSE)) {
-                return getSets(params[0], params[1], params[2], params[3], params[4], params[5]);
+                return getSets(params[0], params[1], params[2], params[3], params[4], params[5], params[6]);
             } else if (requestMethod.equals(Constants.LOGIN)) {
                 return getLogin(params[0], params[1]);
             } else if (requestMethod.equals(Constants.SET_OWN)) {
@@ -129,7 +129,8 @@ public class HTTPDispatcher {
             return "";
         }
 
-        public String getSets(String query, String theme, String year, String user_hash, String owned, String wanted) {
+        public String getSets(String query, String theme, String year, String user_hash,
+                              String owned, String wanted, String pageNumber) {
 
             List<NameValuePair> pairs = new ArrayList<>();
             pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));
@@ -143,7 +144,7 @@ public class HTTPDispatcher {
             pairs.add(new BasicNameValuePair("wanted", wanted));
             pairs.add(new BasicNameValuePair("orderBy", ""));
             pairs.add(new BasicNameValuePair("pageSize", Constants.BROWSE_PAGE_SIZE));
-            pairs.add(new BasicNameValuePair("pageNumber", ""));
+            pairs.add(new BasicNameValuePair("pageNumber", pageNumber));
             pairs.add(new BasicNameValuePair("userName", ""));
 
             return doRequest(Constants.REQUEST_GET_SETS, pairs);
