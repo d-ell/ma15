@@ -3,19 +3,21 @@ package ma15.brickcollector;
 import android.widget.AbsListView;
 import android.widget.Toast;
 
+import ma15.brickcollector.Utils.Constants;
+
 public class EndlessScrollListener implements AbsListView.OnScrollListener {
 
     private int visibleThreshold = 5;
     private int currentPage = 0;
     private int previousTotal = 0;
     private boolean loading = false;
-    private ListOnlineFetchedSetsActivity activity;
+    private LoadSets setLoader;
 
     public EndlessScrollListener() {
     }
-    public EndlessScrollListener(ListOnlineFetchedSetsActivity activity, int visibleThreshold) {
+    public EndlessScrollListener(LoadSets activity, int visibleThreshold) {
         this.visibleThreshold = visibleThreshold;
-        this.activity = activity;
+        this.setLoader = activity;
     }
 
     @Override
@@ -28,12 +30,17 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
                 currentPage++;
             }
         }
+
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
             /*Toast.makeText(activity,
                     "Load page " + (currentPage + 1), Toast.LENGTH_SHORT)
                     .show();*/
 
-            activity.loadSets(currentPage + 1);
+            if(totalItemCount != 0 && totalItemCount < Integer.parseInt(Constants.BROWSE_PAGE_SIZE)) {
+                return;
+            }
+
+            setLoader.loadSets(currentPage + 1);
 
             loading = true;
         }

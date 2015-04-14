@@ -145,11 +145,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             UserManager.getInstance().setUserHash(null);
             return;
         } else {
-            Toast.makeText(getActivity(), "Login was successful",Toast.LENGTH_SHORT).show();
-            //TODO: What next, redirect?
+            UserManager.getInstance().setUserHash(user_hash);
+            Toast.makeText(getActivity(), "Login was successful", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).getmNavigationDrawerFragment().updateDrawerTitles();
+            ((MainActivity) getActivity()).getmNavigationDrawerFragment().selectItem(0);
         }
-
-        UserManager.getInstance().setUserHash(user_hash);
     }
 
     @Override

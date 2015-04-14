@@ -4,14 +4,20 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string-array name="drawer_array">
+    <string-array name="drawer_array_State_Login">
         <item>Browse</item>
-        <item>Log In</item>
         <item>Sets I own</item>
         <item>Sets I want</item>
+        <item>Logout</item>
+        <item>Settings</item>
+    </string-array>
+    <string-array name="drawer_array_State_Logout">
+        <item>Browse</item>
+        <item>Login</item>
         <item>Register</item>
         <item>Settings</item>
     </string-array>
+
     <string name="title_activity_browse">BrowseActivity</string>
 
     <string name="title_section1">Section 1</string>

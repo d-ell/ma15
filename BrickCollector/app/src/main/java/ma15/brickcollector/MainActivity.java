@@ -2,42 +2,34 @@ package ma15.brickcollector;
 
 import android.app.Activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.adapter.SetXmlParser;
-import ma15.brickcollector.connection.Callback;
-import ma15.brickcollector.connection.HTTPDispatcher;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    public NavigationDrawerFragment getmNavigationDrawerFragment() {
+        return mNavigationDrawerFragment;
+    }
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private String[] mDrawerTitles;
+    private String[] mDrawerTitlesLogin;
+    private String[] mDrawerTitlesLogout;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -47,7 +39,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDrawerTitles = getResources().getStringArray(R.array.drawer_array);
+        mDrawerTitlesLogin = getResources().getStringArray(R.array.drawer_array_State_Login);
+        mDrawerTitlesLogout = getResources().getStringArray(R.array.drawer_array_State_Logout);
 
         setContentView(R.layout.activity_main);
 
@@ -67,29 +60,53 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
 
-        switch(position) {
-            case 0:
-                fragment = BrowseFragment.newInstance(mDrawerTitles[position]);
-                break;
-            case 1:
-                fragment = LoginFragment.newInstance(mDrawerTitles[position]);
-                break;
-            case 2:
-                if(!checkLogin()) {
+        if(UserManager.getInstance().checkLogin()) {
+            switch(position) {
+                case 0:
+                    fragment = BrowseFragment.newInstance(mDrawerTitlesLogin[position]);
+                    break;
+                case 1:
+                    fragment = SetListFragment.newInstance(mDrawerTitlesLogin[position], true, false);
+                    break;
+                case 2:
+                    fragment = SetListFragment.newInstance(mDrawerTitlesLogin[position], false, true);
+                    break;
+                //logout
+                case 3:
+                    UserManager.getInstance().setUserHash(null);
+                    mNavigationDrawerFragment.updateDrawerTitles();
+                    mNavigationDrawerFragment.selectItem(0);
                     return;
-                }
-                getSets(true,false);
-                return;
-            case 3:
-                if(!checkLogin()) {
+                //Settings
+                case 4:
+                    //break;
                     return;
-                }
-                getSets(false,true);
-                return;
-
-            default:
-                return;
+                default:
+                    return;
+            }
+        } else {
+            switch(position) {
+                case 0:
+                    fragment = BrowseFragment.newInstance(mDrawerTitlesLogout[position]);
+                    break;
+                //login
+                case 1:
+                    fragment = LoginFragment.newInstance(mDrawerTitlesLogout[position]);
+                    break;
+                //register
+                case 2:
+                    //break;
+                    return;
+                //Settings
+                case 3:
+                    //break;
+                    return;
+                default:
+                    return;
+            }
         }
+
+
 
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
@@ -118,13 +135,18 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(String title) {
         mTitle = title;
+        restoreActionBar();
     }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+
+        if (actionBar != null) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
+
     }
 
 

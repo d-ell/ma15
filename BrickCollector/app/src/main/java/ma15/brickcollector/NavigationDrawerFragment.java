@@ -22,6 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -57,6 +60,7 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private ArrayList<String> mTitles = new ArrayList<String>();
 
     public NavigationDrawerFragment() {
     }
@@ -97,12 +101,32 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
+
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1, getResources().getStringArray(R.array.drawer_array)));
+                android.R.id.text1, mTitles));
+
+        updateDrawerTitles();
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
+    }
+
+    public void updateDrawerTitles() {
+
+        String[] tmp = UserManager.getInstance().checkLogin() ?
+                getResources().getStringArray(R.array.drawer_array_State_Login) :
+                getResources().getStringArray(R.array.drawer_array_State_Logout);
+
+        mTitles.clear();
+
+        for(int i = 0; i < tmp.length; i++) {
+            mTitles.add(tmp[i]);
+        }
+
+        ((ArrayAdapter) mDrawerListView.getAdapter()).notifyDataSetChanged();
     }
 
     public boolean isDrawerOpen() {
@@ -183,7 +207,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);

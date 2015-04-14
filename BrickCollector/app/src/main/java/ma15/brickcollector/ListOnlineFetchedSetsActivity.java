@@ -20,7 +20,7 @@ import ma15.brickcollector.adapter.SetXmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
 
-public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements Callback {
+public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements Callback, LoadSets {
 
 	List<BrickSet> sets = null;
 	ListView list;
