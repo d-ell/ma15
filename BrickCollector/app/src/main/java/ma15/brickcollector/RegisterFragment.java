@@ -11,6 +11,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -48,6 +51,7 @@ public class RegisterFragment extends Fragment {
 
     private ProgressDialog progress;
     private WebView webView;
+    private boolean is_loaded = false;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,7 +77,32 @@ public class RegisterFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // acc. to so, enables actionbar items
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("onOptionsItemSelected","yes");
+        switch (item.getItemId()) {
+            case R.id.action_stop:
+                Toast.makeText(getActivity(), "Action in Register.", Toast.LENGTH_SHORT).show();
+                webView.stopLoading();
+                //webView.ca
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.register, menu);
+
+        //menu.findItem(R.id.action_stop).setEnabled(!is_loaded);
+        menu.findItem(R.id.action_stop).setVisible(!is_loaded);
+       // menu.clear();
     }
 
     @Override
@@ -83,6 +112,7 @@ public class RegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         webView = (WebView) view.findViewById(R.id.webview);
+        webView.clearCache(true);
 
         // webView.setInitialScale(0);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -96,10 +126,16 @@ public class RegisterFragment extends Fragment {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 Toast.makeText(getActivity(), "Oh no! Error " + description, Toast.LENGTH_SHORT).show();
             }
+            public void onPageFinished(WebView view, String url) {
+                is_loaded = true;
+                getActivity().invalidateOptionsMenu();
+            }
         });
 
+        webView.setWebChromeClient(new WebChromeClient());
         webView.loadUrl(Constants.REGISTER_URL);
 
+        /*
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -111,7 +147,7 @@ public class RegisterFragment extends Fragment {
                     hideProgressDialog();
                 }
             }
-        });
+        });*/
 
         return view;
     }
