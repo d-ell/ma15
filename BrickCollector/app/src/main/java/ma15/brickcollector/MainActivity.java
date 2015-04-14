@@ -98,8 +98,8 @@ public class MainActivity extends ActionBarActivity
                     break;
                 //register
                 case 2:
-                    //break;
-                    return;
+                    fragment = RegisterFragment.newInstance(mDrawerTitlesLogout[position]);
+                    break;
                 //Settings
                 case 3:
                     //break;

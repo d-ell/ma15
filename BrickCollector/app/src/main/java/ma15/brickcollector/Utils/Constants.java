@@ -12,6 +12,7 @@ public class Constants {
     public static final String SET_WANT = "SET_WANT";
 
     public static final String BASE_URL = "http://brickset.com/api/v2.asmx/";
+    public static final String REGISTER_URL = "http://brickset.com/signup";
 
     public static final String REQUEST_GET_SETS = "getSets";
     public static final String REQUEST_LOGIN = "login";

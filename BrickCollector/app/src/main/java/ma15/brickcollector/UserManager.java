@@ -5,8 +5,8 @@ package ma15.brickcollector;
  */
 public class UserManager {
 
-    private String userHash = "7HFw_bVFYT";
-    //private String userHash = null;
+    //private String userHash = "7HFw_bVFYT";
+    private String userHash = null;
     private static UserManager instance = null;
 
     private UserManager() {
