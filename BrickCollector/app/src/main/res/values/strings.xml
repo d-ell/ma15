@@ -67,5 +67,6 @@
     <string name="lbl_detail_own">I own this set</string>
     <string name="lbl_detail_wish">I want this set</string>
     <string name="chbx_detail_wish_text">Put on my wishlist</string>
+    <string name="logout_toast">Successfully logged out!</string>
 
 </resources>

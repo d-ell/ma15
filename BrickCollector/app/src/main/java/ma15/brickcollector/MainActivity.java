@@ -74,6 +74,9 @@ public class MainActivity extends ActionBarActivity
                 //logout
                 case 3:
                     UserManager.getInstance().setUserHash(null);
+                    Toast.makeText(this,
+                            getString(R.string.logout_toast), Toast.LENGTH_SHORT)
+                            .show();
                     mNavigationDrawerFragment.updateDrawerTitles();
                     mNavigationDrawerFragment.selectItem(0);
                     return;

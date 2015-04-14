@@ -118,7 +118,7 @@ public class HTTPDispatcher {
                 Log.d(TAG, "POST result: " + result);
 
                 // dummy for progress
-                publishProgress(100);
+                // publishProgress(100);
 
                 return result;
 
@@ -212,10 +212,10 @@ public class HTTPDispatcher {
             progressDialog = new ProgressDialog((Context) activity);
             progressDialog.setTitle("Loading");
             progressDialog.setMessage("Please Wait...");
-            progressDialog.setIndeterminate(false);
-            progressDialog.setMax(100);
+            progressDialog.setIndeterminate(true);
+            //progressDialog.setMax(100);
             progressDialog.setCancelable(true);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            // progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setCanceledOnTouchOutside(true);
             progressDialog
                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
