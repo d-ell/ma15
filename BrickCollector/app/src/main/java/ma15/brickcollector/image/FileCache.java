@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.image;
 
 import java.io.File;
 
@@ -36,8 +36,7 @@ public class FileCache {
         //I identify images by hashcode. Not a perfect solution, good for the demo.
         String filename = String.valueOf(url.hashCode());
         //Another possible solution (thanks to grantland)
-        File f = new File(cacheDir, filename);
-        return f;
+        return new File(cacheDir, filename);
  
     }
  

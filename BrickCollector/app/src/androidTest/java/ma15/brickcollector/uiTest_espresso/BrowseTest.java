@@ -8,9 +8,7 @@ import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 
-import org.hamcrest.Matchers;
-
-import ma15.brickcollector.MainActivity;
+import ma15.brickcollector.activity.MainActivity;
 import ma15.brickcollector.R;
 
 /**

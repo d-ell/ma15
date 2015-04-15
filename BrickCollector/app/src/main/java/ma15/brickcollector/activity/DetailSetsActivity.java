@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.activity;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,8 +16,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ma15.brickcollector.data.BrickSet;
+import ma15.brickcollector.image.ImageLoader;
+import ma15.brickcollector.R;
+import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.adapter.SetXmlParser;
+import ma15.brickcollector.Utils.SetXmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
 
@@ -220,8 +224,8 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
         String xmlResult = SetXmlParser.getXMLResultString(xml);
         Log.d(TAG, "xml result: " + xmlResult);
 
-        if(xmlResult == null || xmlResult.indexOf(Constants.ERROR) != -1 ||
-                xmlResult.indexOf(Constants.INVALID_KEY) != -1) {
+        if(xmlResult == null || xmlResult.contains(Constants.ERROR) ||
+                xmlResult.contains(Constants.INVALID_KEY)) {
             this.setCollectionUIValues();
             return;
         }

@@ -2,7 +2,7 @@ package ma15.brickcollector.uiTest_espresso;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import ma15.brickcollector.MainActivity;
+import ma15.brickcollector.activity.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

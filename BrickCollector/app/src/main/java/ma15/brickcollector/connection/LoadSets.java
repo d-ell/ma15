@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.connection;
 
 /**
  * Created by thomas on 14.04.15.

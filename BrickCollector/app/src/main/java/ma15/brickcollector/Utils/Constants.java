@@ -1,8 +1,5 @@
 package ma15.brickcollector.Utils;
 
-/**
- * Created by thomas on 09.04.15.
- */
 public class Constants {
 
     public static final String BROWSE = "BROWSE";

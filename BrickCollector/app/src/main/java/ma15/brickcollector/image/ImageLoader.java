@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.image;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
+import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.Util;
 
 public class ImageLoader {

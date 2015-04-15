@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import ma15.brickcollector.BrickSet;
-import ma15.brickcollector.ImageLoader;
+import ma15.brickcollector.data.BrickSet;
+import ma15.brickcollector.image.ImageLoader;
 import ma15.brickcollector.R;
 
 public class OnlineFetchedSetsAdapter extends BaseAdapter {

@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,11 +15,18 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ma15.brickcollector.data.BrickSet;
+import ma15.brickcollector.listener.EndlessScrollListener;
+import ma15.brickcollector.activity.MainActivity;
+import ma15.brickcollector.R;
+import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.activity.DetailSetsActivity;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
-import ma15.brickcollector.adapter.SetXmlParser;
+import ma15.brickcollector.Utils.SetXmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
+import ma15.brickcollector.connection.LoadSets;
 
 
 /**
@@ -37,7 +44,6 @@ public class SetListFragment extends Fragment implements Callback, LoadSets {
     private static final String ARG_OWN = "own";
     private static final String ARG_WANT = "want";
 
-    // TODO: Rename and change types of parameters
     private String mTitle;
     private boolean mOwn;
     private boolean mWant;
@@ -53,7 +59,6 @@ public class SetListFragment extends Fragment implements Callback, LoadSets {
      * @param title Parameter.
      * @return A new instance of fragment LoginFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SetListFragment newInstance(String title, boolean own, boolean want) {
         SetListFragment fragment = new SetListFragment();
 
@@ -81,7 +86,7 @@ public class SetListFragment extends Fragment implements Callback, LoadSets {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_list_sets, container, false);
 
-        sets = new ArrayList<BrickSet>();
+        sets = new ArrayList<>();
 
         list = (ListView) view.findViewById(R.id.listview);
 
@@ -105,7 +110,7 @@ public class SetListFragment extends Fragment implements Callback, LoadSets {
                 List<BrickSet> tmp = sets;
 
                 try {
-                    brickSet = (BrickSet) tmp.get(position);
+                    brickSet = tmp.get(position);
                 } catch (ClassCastException e) {
                     System.out.println("Could not cast!");
                     e.printStackTrace();
