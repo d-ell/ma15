@@ -18,9 +18,10 @@ import ma15.brickcollector.activity.MainActivity;
 import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.Utils.SetXmlParser;
+import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
+import ma15.brickcollector.connection.PostRequest;
 
 
 /**
@@ -135,7 +136,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     public void handleResponse(String requestMethod, String xml) {
         Log.d(TAG, "Login result: " + xml);
 
-        String user_hash = SetXmlParser.getUserHash(xml);
+        String user_hash = XmlParser.getUserHash(xml);
         Log.d(TAG, "User hash: " + user_hash);
 
         if(user_hash == null || user_hash.contains(Constants.ERROR) ||
@@ -167,7 +168,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
                 // start asynchronous search => doGetRequest makes callback
                 // to handleResponse()
                 HTTPDispatcher dispatcher = new HTTPDispatcher();
-                dispatcher.new PostRequest(getActivity(), this, Constants.LOGIN, progress).execute(mUser.getText().toString(),
+                new PostRequest(getActivity(), this, Constants.LOGIN, progress).execute(mUser.getText().toString(),
                         mPassword.getText().toString(),
                         null);
                 break;

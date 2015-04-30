@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ma15.brickcollector.connection.PostRequest;
 import ma15.brickcollector.data.BrickSet;
 import ma15.brickcollector.listener.EndlessScrollListener;
 import ma15.brickcollector.activity.MainActivity;
@@ -23,7 +24,7 @@ import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.activity.DetailSetsActivity;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
-import ma15.brickcollector.Utils.SetXmlParser;
+import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
 import ma15.brickcollector.connection.LoadSets;
@@ -155,7 +156,7 @@ public class SetListFragment extends Fragment implements Callback, LoadSets {
             Toast.makeText(getActivity(), "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
         }
 
-        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
+        ArrayList<BrickSet> results = XmlParser.getSets(xml);
         if (results == null || results.isEmpty()) {
             Toast.makeText(getActivity(), "No more data to load.", Toast.LENGTH_SHORT).show();
         } else {
@@ -181,7 +182,7 @@ public class SetListFragment extends Fragment implements Callback, LoadSets {
         // start asynchronous search => doGetRequest makes callback
         // to handleResponse()
         HTTPDispatcher dispatcher = new HTTPDispatcher();
-        dispatcher.new PostRequest(getActivity(), this, Constants.BROWSE, progress).execute("", "", "",
+        new PostRequest(getActivity(), this, Constants.BROWSE, progress).execute("", "", "",
                 UserManager.getInstance().getUserHash(),
                 mOwn ? "1" : "",
                 mWant ? "1" : "",

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 import ma15.brickcollector.data.BrickSet;
 
-public class SetXmlParser {
+public class XmlParser {
 
-    final static String TAG = SetXmlParser.class.getName();
+    final static String TAG = XmlParser.class.getName();
 
     private static final String ns = null;
     private static ArrayList<String> tagNames = new ArrayList<>();

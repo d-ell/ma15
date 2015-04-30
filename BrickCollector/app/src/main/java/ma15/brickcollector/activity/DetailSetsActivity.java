@@ -16,12 +16,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ma15.brickcollector.connection.PostRequest;
 import ma15.brickcollector.data.BrickSet;
 import ma15.brickcollector.image.ImageLoader;
 import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.Utils.SetXmlParser;
+import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
 
@@ -86,7 +87,7 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
                     // start asynchronous search => doGetRequest makes callback
                     // to handleResponse()
                     HTTPDispatcher dispatcher = new HTTPDispatcher();
-                    dispatcher.new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN, progress).
+                    new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN, progress).
                             execute(UserManager.getInstance().getUserHash(),
                                     set.getSetID(),
                                     isChecked ? "1" : "0");
@@ -110,7 +111,7 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
                     // start asynchronous search => doGetRequest makes callback
                     // to handleResponse()
                     HTTPDispatcher dispatcher = new HTTPDispatcher();
-                    dispatcher.new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_WANT, progress).
+                    new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_WANT, progress).
                             execute(UserManager.getInstance().getUserHash(),
                                     set.getSetID(),
                                     isChecked ? "1" : "0");
@@ -134,7 +135,7 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
                         // start asynchronous search => doGetRequest makes callback
                         // to handleResponse()
                         HTTPDispatcher dispatcher = new HTTPDispatcher();
-                        dispatcher.new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN_QUANTITIY, progress).
+                        new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN_QUANTITIY, progress).
                                 execute(UserManager.getInstance().getUserHash(),
                                         set.getSetID(),
                                         txtOwnQuantity.getText().toString());
@@ -221,7 +222,7 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
     public void handleResponse(String requestMethod, String xml) {
         Log.d(TAG, "Login result: " + xml);
 
-        String xmlResult = SetXmlParser.getXMLResultString(xml);
+        String xmlResult = XmlParser.getXMLResultString(xml);
         Log.d(TAG, "xml result: " + xmlResult);
 
         if(xmlResult == null || xmlResult.contains(Constants.ERROR) ||

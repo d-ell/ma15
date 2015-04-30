@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import ma15.brickcollector.connection.PostRequest;
 import ma15.brickcollector.data.BrickSet;
 import ma15.brickcollector.listener.EndlessScrollListener;
 import ma15.brickcollector.connection.LoadSets;
@@ -21,7 +22,7 @@ import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
-import ma15.brickcollector.Utils.SetXmlParser;
+import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
 
@@ -105,7 +106,7 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
         // start asynchronous search => doGetRequest makes callback
         // to handleResponse()
         HTTPDispatcher dispatcher = new HTTPDispatcher();
-        dispatcher.new PostRequest(this, this, Constants.BROWSE, progress).execute(strQuery,
+        new PostRequest(this, this, Constants.BROWSE, progress).execute(strQuery,
                 strTheme,
                 strYear,
                 UserManager.getInstance().getUserHash(),
@@ -120,7 +121,7 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
             Toast.makeText(this, "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
         }
 
-        ArrayList<BrickSet> results = SetXmlParser.getSets(xml);
+        ArrayList<BrickSet> results = XmlParser.getSets(xml);
         if (results == null || results.isEmpty()) {
             Toast.makeText(this, "No more data to load.", Toast.LENGTH_SHORT).show();
         } else {
