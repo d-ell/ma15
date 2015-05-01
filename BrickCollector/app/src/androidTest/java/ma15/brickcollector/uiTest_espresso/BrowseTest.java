@@ -36,7 +36,9 @@ import ma15.brickcollector.data.BrickSet;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 /**
@@ -61,10 +63,19 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
         Espresso.onView(ViewMatchers.withId(R.id.btnGo)).perform(ViewActions.click());
 
+        //check if Element is in Listview - Based on given String in name of Bricksetdata
         Espresso.onView(allOf(ViewMatchers.withId(R.id.listview))).
                 check(ViewAssertions.matches(matchBatman("Batman")));
 
+        //click if Element is in Listview - Based on given String in name of Bricksetdata
+        Espresso.onView(allOf(ViewMatchers.withId(R.id.listview), matchBatman("Batman"))).
+                perform(ViewActions.click());
+
+        //Espresso.onData(matchString("Batman")).inAdapterView(ViewMatchers.withId(R.id.listview)).atPosition(0).perform(ViewActions.click());
+
+
     }
+
 
 
     private static Matcher<View> matchBatman(String batman) {
