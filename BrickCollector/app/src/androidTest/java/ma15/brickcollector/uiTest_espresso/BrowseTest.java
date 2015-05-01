@@ -6,11 +6,15 @@ import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -22,11 +26,16 @@ import org.hamcrest.core.Is;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
+import java.util.List;
 import java.util.Map;
 
 import ma15.brickcollector.activity.MainActivity;
 import ma15.brickcollector.R;
+import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
+import ma15.brickcollector.data.BrickSet;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
@@ -52,33 +61,42 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
         Espresso.onView(ViewMatchers.withId(R.id.btnGo)).perform(ViewActions.click());
 
-        //Espresso.onView(ViewMatchers.withId(R.id.listview)).check(ViewAssertions.matches(withAdaptedData(ViewMatchers.withChild(ViewMatchers.withText("4526: Batman")))));
-        Espresso.onView(AllOf.allOf(ViewMatchers.withId(R.id.title), Is.is(IsInstanceOf.instanceOf(Map.class)), ViewMatchers.withText("Batman")));
+        Espresso.onView(allOf(ViewMatchers.withId(R.id.listview))).
+                check(ViewAssertions.matches(matchBatman("Batman")));
+
     }
 
 
-    private static Matcher<View> withAdaptedData(final Matcher<View> dataMatcher) {
+    private static Matcher<View> matchBatman(String batman) {
+        return matchBatman(equalTo(batman));
+    }
+
+    private static Matcher<View> matchBatman(final Matcher<String> dataMatcher) {
         return new TypeSafeMatcher<View>() {
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with class name: ");
-                dataMatcher.describeTo(description);
-            }
-
             @Override
             public boolean matchesSafely(View view) {
-                if (!(view instanceof AdapterView)) {
+
+                if (!(view instanceof ListView)) {
                     return false;
                 }
-                @SuppressWarnings("rawtypes")
-                Adapter adapter = ((AdapterView) view).getAdapter();
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    if (dataMatcher.matches(adapter.getItem(i))) {
+
+                ListView listView = (ListView) view;
+                OnlineFetchedSetsAdapter adapter = (OnlineFetchedSetsAdapter) listView.getAdapter();
+                List<BrickSet> data = adapter.getData();
+
+                for (int i = 0; i < data.size(); i++) {
+
+                    if (dataMatcher.matches(data.get(i).getName())) {
                         return true;
                     }
                 }
+
                 return false;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with content: " + description);
             }
         };
     }

@@ -62,4 +62,8 @@ public class OnlineFetchedSetsAdapter extends BaseAdapter {
         imageLoader.DisplayImage(brickSet.getThumbnailURL(), thumb_image);
         return vi;
     }
+
+    public List<BrickSet> getData() {
+        return this.data;
+    }
 }
