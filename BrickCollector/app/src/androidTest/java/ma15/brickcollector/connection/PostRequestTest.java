@@ -9,7 +9,7 @@ import org.junit.Test;
 import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.Utils.XmlParser;
 
-public class postRequestTest extends AndroidTestCase {
+public class PostRequestTest extends AndroidTestCase {
 
     @Before
     public void setUp() throws Exception {
