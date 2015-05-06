@@ -37,4 +37,8 @@ public class Constants {
     public static final String RETURN_STRING_CORRECT_KEY = "OK (v2)";
     public static final String RETURN_STRING_INCORRECT_KEY = "INVALIDKEY";
 
+    public static final String RETURN_STRING_CORRECT_SET_REQUEST = "OK";
+    public static final String RETURN_STRING_SET_REQUEST_INCORRECT_USER = "ERROR: invalid userHash";
+    public static final String RETURN_STRING_SET_REQUEST_INCORRECT_OWN = "ERROR: owned not 0 or 1";
+
 }
