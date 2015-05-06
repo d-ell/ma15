@@ -75,6 +75,7 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
         Integer []ids = {R.id.txtQuery, R.id.txtTheme, R.id.txtYear};
         String testStringInput = "123";
 
+        // all fields empty => button diasbled
         for(int id : ids) {
             Espresso.onView(withId(id))
                     .check(matches(withText("")));
@@ -82,6 +83,7 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
         Espresso.onView(withId(R.id.btnGo)).check(matches(not(isEnabled())));
 
+        // if at least 1 field is not empty => button enabled
         List<List<Integer>> powerSet = TestHelper.getPowerSetOfArray(Arrays.asList(ids));
         for(List<Integer> set : powerSet) {
             for(Integer value : set) {
@@ -91,6 +93,7 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
             for(Integer value : set) {
                 Espresso.onView(withId(value)).perform(clearText());
             }
+            Espresso.onView(withId(R.id.btnGo)).check(matches(not(isEnabled())));
         }
     }
 
