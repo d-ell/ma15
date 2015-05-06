@@ -1,7 +1,6 @@
-package ma15.brickcollector;
+package ma15.brickcollector.fragment;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -15,11 +14,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import ma15.brickcollector.activity.MainActivity;
+import ma15.brickcollector.R;
+import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.Utils.Util;
-import ma15.brickcollector.adapter.SetXmlParser;
+import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.connection.Callback;
 import ma15.brickcollector.connection.HTTPDispatcher;
+import ma15.brickcollector.connection.PostRequest;
 
 
 /**
@@ -35,7 +37,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     private static final String ARG_TITLE = "title";
     final static String TAG = LoginFragment.class.getName();
 
-    // TODO: Rename and change types of parameters
     private String mTitle;
     private EditText mUser;
     private EditText mPassword;
@@ -47,7 +48,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
      * @param title Parameter.
      * @return A new instance of fragment LoginFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static LoginFragment newInstance(String title) {
         LoginFragment fragment = new LoginFragment();
 
@@ -136,14 +136,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     public void handleResponse(String requestMethod, String xml) {
         Log.d(TAG, "Login result: " + xml);
 
-        String user_hash = SetXmlParser.getUserHash(xml);
+        String user_hash = XmlParser.getUserHash(xml);
         Log.d(TAG, "User hash: " + user_hash);
 
-        if(user_hash == null || user_hash.indexOf(Constants.ERROR) != -1 ||
-                user_hash.indexOf(Constants.INVALID_KEY) != -1) {
+        if(user_hash == null || user_hash.contains(Constants.ERROR) ||
+                user_hash.contains(Constants.INVALID_KEY)) {
             Toast.makeText(getActivity(), "Error: Login was NOT successful",Toast.LENGTH_SHORT).show();
             UserManager.getInstance().setUserHash(null);
-            return;
         } else {
             UserManager.getInstance().setUserHash(user_hash);
             Toast.makeText(getActivity(), "Login was successful", Toast.LENGTH_SHORT).show();
@@ -169,7 +168,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
                 // start asynchronous search => doGetRequest makes callback
                 // to handleResponse()
                 HTTPDispatcher dispatcher = new HTTPDispatcher();
-                dispatcher.new PostRequest(getActivity(), this, Constants.LOGIN, progress).execute(mUser.getText().toString(),
+                new PostRequest(getActivity(), this, Constants.LOGIN, progress).execute(mUser.getText().toString(),
                         mPassword.getText().toString(),
                         null);
                 break;

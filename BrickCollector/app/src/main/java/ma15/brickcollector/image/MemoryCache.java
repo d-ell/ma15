@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.image;
 
 import java.lang.ref.SoftReference;
 import java.util.Collections;

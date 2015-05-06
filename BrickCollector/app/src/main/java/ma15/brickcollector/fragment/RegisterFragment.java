@@ -1,14 +1,9 @@
-package ma15.brickcollector;
+package ma15.brickcollector.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,20 +11,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import ma15.brickcollector.activity.MainActivity;
+import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.Utils.Util;
-import ma15.brickcollector.adapter.SetXmlParser;
-import ma15.brickcollector.connection.Callback;
-import ma15.brickcollector.connection.HTTPDispatcher;
 
 
 /**
@@ -37,7 +26,7 @@ import ma15.brickcollector.connection.HTTPDispatcher;
  * Activities that contain this fragment must implement the
  * {@link android.view.View.OnClickListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link ma15.brickcollector.fragment.LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
@@ -46,7 +35,6 @@ public class RegisterFragment extends Fragment {
 
     final static String TAG = RegisterFragment.class.getName();
 
-    // TODO: Rename and change types of parameters
     private String mTitle;
 
     private ProgressDialog progress;
@@ -60,7 +48,6 @@ public class RegisterFragment extends Fragment {
      * @param title Parameter.
      * @return A new instance of fragment LoginFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static RegisterFragment newInstance(String title) {
         RegisterFragment fragment = new RegisterFragment();
 
@@ -84,7 +71,7 @@ public class RegisterFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("onOptionsItemSelected","yes");
+            Log.d("onOptionsItemSelected", "yes");
         switch (item.getItemId()) {
             case R.id.action_stop:
                 Toast.makeText(getActivity(), "Action in Register.", Toast.LENGTH_SHORT).show();

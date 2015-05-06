@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,14 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import ma15.brickcollector.Utils.Constants;
-import ma15.brickcollector.adapter.SetXmlParser;
-import ma15.brickcollector.connection.Callback;
-import ma15.brickcollector.connection.HTTPDispatcher;
+import ma15.brickcollector.activity.ListOnlineFetchedSetsActivity;
+import ma15.brickcollector.activity.MainActivity;
+import ma15.brickcollector.R;
 
 
 /**
@@ -31,12 +27,10 @@ import ma15.brickcollector.connection.HTTPDispatcher;
  * create an instance of this fragment.
  */
 public class BrowseFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_TITLE = "title";
     final static String TAG = BrowseFragment.class.getName();
 
-    // TODO: Rename and change types of parameters
     private String mTitle;
     private EditText mQuery;
     private EditText mTheme;

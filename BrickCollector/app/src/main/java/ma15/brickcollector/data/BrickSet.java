@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

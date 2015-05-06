@@ -1,6 +1,5 @@
-package ma15.brickcollector.adapter;
+package ma15.brickcollector.Utils;
 
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -9,21 +8,16 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.List;
 
-import ma15.brickcollector.BrickSet;
+import ma15.brickcollector.data.BrickSet;
 
-/**
- * Created by dan on 31/03/15.
- */
-public class SetXmlParser {
+public class XmlParser {
 
-    final static String TAG = SetXmlParser.class.getName();
+    final static String TAG = XmlParser.class.getName();
 
     private static final String ns = null;
     private static ArrayList<String> tagNames = new ArrayList<>();

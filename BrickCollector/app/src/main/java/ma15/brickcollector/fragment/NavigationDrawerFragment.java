@@ -1,4 +1,4 @@
-package ma15.brickcollector;
+package ma15.brickcollector.fragment;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -23,7 +23,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import ma15.brickcollector.R;
+import ma15.brickcollector.Utils.UserManager;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -60,7 +62,7 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-    private ArrayList<String> mTitles = new ArrayList<String>();
+    private ArrayList<String> mTitles = new ArrayList<>();
 
     public NavigationDrawerFragment() {
     }
@@ -103,7 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
 
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1, mTitles));

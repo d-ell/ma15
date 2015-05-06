@@ -1,9 +1,9 @@
-package ma15.brickcollector;
+package ma15.brickcollector.listener;
 
 import android.widget.AbsListView;
-import android.widget.Toast;
 
 import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.connection.LoadSets;
 
 public class EndlessScrollListener implements AbsListView.OnScrollListener {
 
