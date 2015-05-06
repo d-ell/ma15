@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -36,10 +37,32 @@ public class RegisterFragment extends Fragment {
     final static String TAG = RegisterFragment.class.getName();
 
     private String mTitle;
+    private String mHtml;
 
     private ProgressDialog progress;
     private WebView webView;
     private boolean is_loaded = false;
+    private boolean is_finished = false;
+    private boolean is_error = false;
+
+    public String getHtml() {
+        return mHtml;
+    }
+
+    public boolean isFinished() {
+        return is_finished;
+    }
+
+    class LoadListener{
+        @JavascriptInterface
+        public void processHTML(String html)
+        {
+            if(!is_error) {
+                mHtml = html;
+            }
+            is_finished = true;
+        }
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -103,6 +126,7 @@ public class RegisterFragment extends Fragment {
 
         // webView.setInitialScale(0);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new LoadListener(), "HTMLOUT");
         // webView.getSettings().setLoadWithOverviewMode(true);
         // webView.getSettings().setUseWideViewPort(true);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -111,10 +135,18 @@ public class RegisterFragment extends Fragment {
 
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(getActivity(), "Oh no! Error " + description, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Sorry, could not load Register page", Toast.LENGTH_SHORT).show();
+                is_error = true;
+                mHtml = null;
+            }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+                return true;
             }
             public void onPageFinished(WebView view, String url) {
                 is_loaded = true;
+                view.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
                 getActivity().invalidateOptionsMenu();
             }
         });
