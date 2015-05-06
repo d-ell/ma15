@@ -31,41 +31,74 @@ public class PostRequestTest extends AndroidTestCase {
     }
 
     @Test
-    public void testGetLogin() throws Exception {
+    public void testCorrectLogin() throws Exception {
 
-        String key = getUserHash();
+        String key = loginAndGetUserHash(Constants.TESTUSER_NAME, Constants.TESTUSER_PW);
 
-        assertEquals("Key is incorrect", "7HFw_bVFYT", key);
+        assertEquals("Key is incorrect", Constants.TESTUSER_HASH, key);
+    }
+
+    @Test
+    public void testIncorrectLoginWithPassword() throws Exception {
+
+        String key = loginAndGetUserHash(Constants.TESTUSER_NAME, "");
+
+        assertEquals("Login was successful, but should not",
+                Constants.RETURN_STRING_INCORRECT_LOGIN, key);
+    }
+
+    @Test
+    public void testIncorrectLoginWithUser() throws Exception {
+
+        String key = loginAndGetUserHash("", Constants.TESTUSER_PW);
+
+        assertEquals("Login was successful, but should not",
+                Constants.RETURN_STRING_INCORRECT_LOGIN, key);
+    }
+
+    @Test
+    public void testIncorrectLoginWithUserAndPassword() throws Exception {
+
+        String key = loginAndGetUserHash("", "");
+
+        assertEquals("Login was successful, but should not",
+                Constants.RETURN_STRING_INCORRECT_LOGIN, key);
     }
 
     @Test
     public void testSetCollectionOwn() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
     public void testSetCollectionWantQuantity() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
     public void testSetCollectionWant() throws Exception {
-
+        assertTrue(false);
     }
 
     @Test
-    public void testCheckApiKey() {
+    public void testCheckCorrectApiKey() {
 
-        String key = "F1PE-3JWB-BwfC";
-
-        assertEquals(true, ConnectionHandler.checkApiKey(key));
-
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_CHECK_KEY, null);
+        String result = postRequest.checkKey(Constants.API_KEY);
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Incorrect API Key", Constants.RETURN_STRING_CORRECT_KEY, result);
     }
 
+    @Test
+    public void testCheckIncorrectApiKey() {
 
-    private String getUserHash() {
-        final String name = Constants.TESTUSER_NAME;
-        final String pw = Constants.TESTUSER_PW;
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_CHECK_KEY, null);
+        String result = postRequest.checkKey("");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Correct API Key but should not", Constants.RETURN_STRING_INCORRECT_KEY, result);
+    }
+
+    private String loginAndGetUserHash(String name, String pw) {
 
         PostRequest postRequest = new PostRequest(null, null, Constants.LOGIN, null);
         String result = postRequest.getLogin(name, pw);

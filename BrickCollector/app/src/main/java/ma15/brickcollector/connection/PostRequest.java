@@ -58,6 +58,8 @@ public class PostRequest extends AsyncTask<String, Integer, String> {
             return setCollectionWant(params[0], params[1], params[2]);
         } else if (requestMethod.equals(Constants.SET_OWN_QUANTITIY)) {
             return setCollectionWantQuantity(params[0], params[1], params[2]);
+        } else if (requestMethod.equals(Constants.CHECK_KEY)) {
+            return checkKey(params[0]);
         }
 
         return null;
@@ -122,6 +124,12 @@ public class PostRequest extends AsyncTask<String, Integer, String> {
         pairs.add(new BasicNameValuePair("userName", ""));
 
         return doRequest(Constants.REQUEST_GET_SETS, pairs);
+    }
+
+    public String checkKey(String key) {
+        List<NameValuePair> pairs = new ArrayList<>();
+        pairs.add(new BasicNameValuePair("apiKey", key));
+        return doRequest(Constants.REQUEST_CHECK_KEY, pairs);
     }
 
     public String getLogin(String username, String password) {
