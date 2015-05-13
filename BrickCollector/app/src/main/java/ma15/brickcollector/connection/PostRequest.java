@@ -57,7 +57,7 @@ public class PostRequest extends AsyncTask<String, Integer, String> {
         } else if (requestMethod.equals(Constants.SET_WANT)) {
             return setCollectionWant(params[0], params[1], params[2]);
         } else if (requestMethod.equals(Constants.SET_OWN_QUANTITIY)) {
-            return setCollectionWantQuantity(params[0], params[1], params[2]);
+            return setCollectionOwnQuantity(params[0], params[1], params[2]);
         } else if (requestMethod.equals(Constants.CHECK_KEY)) {
             return checkKey(params[0]);
         }
@@ -153,7 +153,7 @@ public class PostRequest extends AsyncTask<String, Integer, String> {
         return doRequest(Constants.REQUEST_SET_OWN, pairs);
     }
 
-    public String setCollectionWantQuantity(String userHash, String setID, String qtyOwned) {
+    public String setCollectionOwnQuantity(String userHash, String setID, String qtyOwned) {
 
         List<NameValuePair> pairs = new ArrayList<>();
         pairs.add(new BasicNameValuePair("apiKey", Constants.API_KEY));

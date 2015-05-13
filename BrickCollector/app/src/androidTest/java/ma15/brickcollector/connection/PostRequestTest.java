@@ -153,8 +153,46 @@ public class PostRequestTest extends AndroidTestCase {
     }
 
     @Test
-    public void testSetCollectionWantQuantity() throws Exception {
-        assertTrue(false);
+    public void testSetCollectionOwnQuantity() throws Exception {
+        String testQuantity = "5";
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_SET_OWN_QUANTITY, null);
+        //TIE Fighter with number 10240
+        String result = postRequest.setCollectionOwnQuantity(Constants.TESTUSER_HASH,"22578",testQuantity);
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Set_collection_own_quantity request did not work",
+                Constants.RETURN_STRING_CORRECT_SET_REQUEST,result);
+
+        postRequest = new PostRequest(null, null, Constants.REQUEST_GET_SETS, null);
+        result = postRequest.getSets("10240", null, null, Constants.TESTUSER_HASH, null, null, null);
+        ArrayList<BrickSet> sets = XmlParser.getSets(result);
+        assertNotNull("Sets are null",sets);
+        assertEquals("More than one set found",sets.size(),1);
+        BrickSet set = sets.get(0);
+        assertNotNull("Set is null",set);
+        assertEquals("Set not owned",set.isOwned(),"true");
+        assertEquals("Own quantity not " + testQuantity,set.getQtyOwned(),testQuantity);
+        result = postRequest.setCollectionOwn(Constants.TESTUSER_HASH,"22578","0");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Set_collection_own request did not work",
+                Constants.RETURN_STRING_CORRECT_SET_REQUEST,result);
+    }
+
+    @Test
+    public void testSetCollectionOwnQuantityIncorrectUser() throws Exception {
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_SET_OWN_QUANTITY, null);
+        String result = postRequest.setCollectionOwnQuantity("","22578","5");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Userhash is correct but should not",
+                Constants.RETURN_STRING_SET_REQUEST_INCORRECT_USER,result);
+    }
+
+    @Test
+    public void testSetCollectionOwnQuantityIncorrectParameter() throws Exception {
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_SET_OWN_QUANTITY, null);
+        String result = postRequest.setCollectionOwnQuantity(Constants.TESTUSER_HASH,"22578","1000");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Quantity parameter is correct but should not",
+                Constants.RETURN_STRING_SET_REQUEST_INCORRECT_QUANTITY,result);
     }
 
 

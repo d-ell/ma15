@@ -39,6 +39,7 @@ public class Constants {
 
     public static final String RETURN_STRING_CORRECT_SET_REQUEST = "OK";
     public static final String RETURN_STRING_SET_REQUEST_INCORRECT_USER = "ERROR: invalid userHash";
+    public static final String RETURN_STRING_SET_REQUEST_INCORRECT_QUANTITY = "ERROR: invalid quantity";
     public static final String RETURN_STRING_SET_REQUEST_INCORRECT_OWN = "ERROR: owned not 0 or 1";
     public static final String RETURN_STRING_SET_REQUEST_INCORRECT_WANT = "ERROR: wanted not 0 or 1";
 
