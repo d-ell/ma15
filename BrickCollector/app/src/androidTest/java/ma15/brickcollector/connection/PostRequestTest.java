@@ -111,14 +111,52 @@ public class PostRequestTest extends AndroidTestCase {
     }
 
     @Test
+    public void testSetCollectionWant() throws Exception {
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_SET_WANT, null);
+        //TIE Fighter with number 75095
+        String result = postRequest.setCollectionWant(Constants.TESTUSER_HASH,"24083","1");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Set_collection_want request did not work",
+                Constants.RETURN_STRING_CORRECT_SET_REQUEST,result);
+
+        postRequest = new PostRequest(null, null, Constants.REQUEST_GET_SETS, null);
+        result = postRequest.getSets("75095", null, null, Constants.TESTUSER_HASH, null, null, null);
+        ArrayList<BrickSet> sets = XmlParser.getSets(result);
+        assertNotNull("Sets are null",sets);
+        assertEquals("More than one set found",sets.size(),1);
+        BrickSet set = sets.get(0);
+        assertNotNull("Set is null",set);
+        assertEquals("Set not wanted",set.isWanted(),"true");
+
+        result = postRequest.setCollectionWant(Constants.TESTUSER_HASH,"24083","0");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Set_collection_want request did not work",
+                Constants.RETURN_STRING_CORRECT_SET_REQUEST,result);
+    }
+
+    @Test
+    public void testSetCollectionWantIncorrectUser() throws Exception {
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_SET_WANT, null);
+        String result = postRequest.setCollectionWant("","24083","1");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Userhash is correct but should not",
+                Constants.RETURN_STRING_SET_REQUEST_INCORRECT_USER,result);
+    }
+
+    @Test
+    public void testSetCollectionWantIncorrectParameter() throws Exception {
+        PostRequest postRequest = new PostRequest(null, null, Constants.REQUEST_SET_WANT, null);
+        String result = postRequest.setCollectionWant(Constants.TESTUSER_HASH,"24083","2");
+        result = XmlParser.getXMLResultString(result);
+        assertEquals("Wanted parameter is correct but should not",
+                Constants.RETURN_STRING_SET_REQUEST_INCORRECT_WANT,result);
+    }
+
+    @Test
     public void testSetCollectionWantQuantity() throws Exception {
         assertTrue(false);
     }
 
-    @Test
-    public void testSetCollectionWant() throws Exception {
-        assertTrue(false);
-    }
 
     @Test
     public void testCheckCorrectApiKey() {
