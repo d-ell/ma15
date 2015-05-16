@@ -9,6 +9,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -24,6 +25,13 @@ import static org.hamcrest.Matchers.equalTo;
  * Created by dan on 06/05/15.
  */
 public class TestHelper {
+
+    public static List<BrickSet> cloneBrickSetList(List<BrickSet> list) {
+        List<BrickSet> clone = new ArrayList<>(list.size());
+        for(BrickSet item: list) clone.add(new BrickSet(item));
+        return clone;
+    }
+
     public static <T> List<List<T>> combination(List<T> values, int size) {
 
         if (0 == size) {

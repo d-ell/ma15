@@ -11,7 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -41,9 +44,11 @@ public class RegisterFragment extends Fragment {
 
     private ProgressDialog progress;
     private WebView webView;
-    private boolean is_loaded = false;
+    private boolean show_stop = true;
     private boolean is_finished = false;
     private boolean is_error = false;
+
+    Menu menu = null;
 
     public String getHtml() {
         return mHtml;
@@ -99,6 +104,9 @@ public class RegisterFragment extends Fragment {
             case R.id.action_stop:
                 Toast.makeText(getActivity(), "Action in Register.", Toast.LENGTH_SHORT).show();
                 webView.stopLoading();
+                show_stop = false;
+                menu.findItem(R.id.action_stop).setVisible(show_stop);
+
                 //webView.ca
                 return true;
             default:
@@ -110,8 +118,11 @@ public class RegisterFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.register, menu);
 
+        this.menu = menu;
+        // menu.findItem(R.id.action_stop).setVisible(false);
+
         //menu.findItem(R.id.action_stop).setEnabled(!is_loaded);
-        menu.findItem(R.id.action_stop).setVisible(!is_loaded);
+        menu.findItem(R.id.action_stop).setVisible(show_stop);
        // menu.clear();
     }
 
@@ -120,6 +131,14 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+
+        /*
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
+            public void onReceiveValue(Boolean value)
+            {
+            }
+        });*/
 
         webView = (WebView) view.findViewById(R.id.webview);
         webView.clearCache(true);
@@ -145,7 +164,7 @@ public class RegisterFragment extends Fragment {
                 return true;
             }
             public void onPageFinished(WebView view, String url) {
-                is_loaded = true;
+                show_stop = false;
                 view.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
                 getActivity().invalidateOptionsMenu();
             }

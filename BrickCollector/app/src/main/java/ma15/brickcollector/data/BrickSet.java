@@ -377,6 +377,38 @@ public class BrickSet implements Parcelable {
         return 0;
     }
 
+    // copy constructor
+    public BrickSet(BrickSet c) {
+        this.setID = c.setID;
+        this.number = c.number;
+        this.numberVariant = c.numberVariant;
+        this.name = c.name;
+        this.year = c.year;
+        this.theme = c.theme;
+        this.subtheme = c.subtheme;
+        this.pieces = c.pieces;
+        this.minifigs = c.minifigs;
+        this.imageFilename = c.imageFilename;
+        this.thumbnailURL = c.thumbnailURL;
+        this.largeThumbnailURL = c.largeThumbnailURL;
+        this.bricksetURL = c.bricksetURL;
+        this.owned = c.owned;
+        this.wanted = c.wanted;
+        this.qtyOwned = c.qtyOwned;
+        this.ownedByTotal = c.ownedByTotal;
+        this.wantedByTotal = c.wantedByTotal;
+        this.UKRetailPrice = c.UKRetailPrice;
+        this.USRetailPrice = c.USRetailPrice;
+        this.CARetailPrice = c.CARetailPrice;
+        this.EURetailPrice = c.EURetailPrice;
+        this.rating = c.rating;
+        this.reviewCount = c.reviewCount;
+        this.packagingType = c.packagingType;
+        this.availability = c.availability;
+        this.instructionsCount = c.instructionsCount;
+        this.additionalImageCount = c.additionalImageCount;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(setID);
@@ -419,7 +451,78 @@ public class BrickSet implements Parcelable {
         }
     };
 
-    /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BrickSet brickSet = (BrickSet) o;
+
+        if (!CARetailPrice.equals(brickSet.CARetailPrice)) return false;
+        if (!EURetailPrice.equals(brickSet.EURetailPrice)) return false;
+        if (!UKRetailPrice.equals(brickSet.UKRetailPrice)) return false;
+        if (!USRetailPrice.equals(brickSet.USRetailPrice)) return false;
+        if (!additionalImageCount.equals(brickSet.additionalImageCount)) return false;
+        if (!availability.equals(brickSet.availability)) return false;
+        if (!bricksetURL.equals(brickSet.bricksetURL)) return false;
+        if (!imageFilename.equals(brickSet.imageFilename)) return false;
+        if (!instructionsCount.equals(brickSet.instructionsCount)) return false;
+        if (!largeThumbnailURL.equals(brickSet.largeThumbnailURL)) return false;
+        if (!minifigs.equals(brickSet.minifigs)) return false;
+        if (!name.equals(brickSet.name)) return false;
+        if (!number.equals(brickSet.number)) return false;
+        if (!numberVariant.equals(brickSet.numberVariant)) return false;
+        if (!owned.equals(brickSet.owned)) return false;
+        if (!ownedByTotal.equals(brickSet.ownedByTotal)) return false;
+        if (!packagingType.equals(brickSet.packagingType)) return false;
+        if (!pieces.equals(brickSet.pieces)) return false;
+        if (!qtyOwned.equals(brickSet.qtyOwned)) return false;
+        if (!rating.equals(brickSet.rating)) return false;
+        if (!reviewCount.equals(brickSet.reviewCount)) return false;
+        if (!setID.equals(brickSet.setID)) return false;
+        if (!subtheme.equals(brickSet.subtheme)) return false;
+        if (!theme.equals(brickSet.theme)) return false;
+        if (!thumbnailURL.equals(brickSet.thumbnailURL)) return false;
+        if (!wanted.equals(brickSet.wanted)) return false;
+        if (!wantedByTotal.equals(brickSet.wantedByTotal)) return false;
+        if (!year.equals(brickSet.year)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = setID.hashCode();
+        result = 31 * result + number.hashCode();
+        result = 31 * result + numberVariant.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + year.hashCode();
+        result = 31 * result + theme.hashCode();
+        result = 31 * result + subtheme.hashCode();
+        result = 31 * result + pieces.hashCode();
+        result = 31 * result + minifigs.hashCode();
+        result = 31 * result + imageFilename.hashCode();
+        result = 31 * result + thumbnailURL.hashCode();
+        result = 31 * result + largeThumbnailURL.hashCode();
+        result = 31 * result + bricksetURL.hashCode();
+        result = 31 * result + owned.hashCode();
+        result = 31 * result + wanted.hashCode();
+        result = 31 * result + qtyOwned.hashCode();
+        result = 31 * result + ownedByTotal.hashCode();
+        result = 31 * result + wantedByTotal.hashCode();
+        result = 31 * result + UKRetailPrice.hashCode();
+        result = 31 * result + USRetailPrice.hashCode();
+        result = 31 * result + CARetailPrice.hashCode();
+        result = 31 * result + EURetailPrice.hashCode();
+        result = 31 * result + rating.hashCode();
+        result = 31 * result + reviewCount.hashCode();
+        result = 31 * result + packagingType.hashCode();
+        result = 31 * result + availability.hashCode();
+        result = 31 * result + instructionsCount.hashCode();
+        result = 31 * result + additionalImageCount.hashCode();
+        return result;
+    }
+/*
     @Override
     public String toString() {
         return "BrickSet [id=" + id + ", title=" + title + ", cover=" + cover + "]";

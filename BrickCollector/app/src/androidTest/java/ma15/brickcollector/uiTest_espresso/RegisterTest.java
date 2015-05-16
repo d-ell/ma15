@@ -38,11 +38,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 
 /**
  * Created by thomas on 09.04.15.
  */
 public class RegisterTest extends ActivityInstrumentationTestCase2<MainActivity> {
+
+    private static final String TAG = RegisterTest.class.getName();
 
     public RegisterTest() {
         super(MainActivity.class);
@@ -52,6 +55,17 @@ public class RegisterTest extends ActivityInstrumentationTestCase2<MainActivity>
     public void setUp() throws Exception {
         super.setUp();
         getActivity();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+
+        DrawerActions.openDrawer(R.id.drawer_layout);
+        onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
+        onData(AllOf.allOf(is(instanceOf(String.class)), is("Browse"))).perform(click());
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
+
+        super.tearDown();
     }
 
     public void testRegisterWebViewEnabled() {
@@ -68,5 +82,16 @@ public class RegisterTest extends ActivityInstrumentationTestCase2<MainActivity>
         onData(AllOf.allOf(is(instanceOf(String.class)), is("Register")))
                 .perform(click());
         Espresso.onView(withId(R.id.webview)).check(matches(isDisplayed()));
+    }
+
+    public void testActionStop() {
+        testRegisterWebViewEnabled();
+
+        onView(withId(R.id.action_stop)).check(matches(isDisplayed()));
+        onView(withId(R.id.action_stop)).check(matches(isEnabled()));
+
+        onView(withId(R.id.action_stop)).perform(click());
+
+        onView(withId(R.id.action_stop)).check(doesNotExist());
     }
 }

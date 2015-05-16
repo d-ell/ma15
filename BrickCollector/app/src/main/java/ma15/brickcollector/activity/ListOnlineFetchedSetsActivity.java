@@ -31,11 +31,17 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
 	List<BrickSet> sets = null;
 	ListView list;
 	OnlineFetchedSetsAdapter adapter;
+    ArrayList<BrickSet> last_results = new ArrayList<BrickSet>();
+
     String strQuery = null;
     String strTheme = null;
     String strYear = null;
     boolean bOwn = false;
     boolean bWant = false;
+
+    public ArrayList<BrickSet> getLastResults() {
+        return last_results;
+    }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +102,7 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
     public void loadSets(int pageNumber) {
         if(!HTTPDispatcher.isConnected(this)) {
             Toast.makeText(this,
-                    "Not connected.", Toast.LENGTH_SHORT)
+                    getString(R.string.notConnected), Toast.LENGTH_SHORT)
                     .show();
             return;
         }
@@ -121,11 +127,13 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
             Toast.makeText(this, "XML is empty. Should never happen", Toast.LENGTH_SHORT).show();
         }
 
-        ArrayList<BrickSet> results = XmlParser.getSets(xml);
-        if (results == null || results.isEmpty()) {
-            Toast.makeText(this, "No more data to load.", Toast.LENGTH_SHORT).show();
+        last_results.clear();
+        last_results = XmlParser.getSets(xml);
+        if (last_results == null || last_results.isEmpty()) {
+            last_results = new ArrayList<BrickSet>();
+            Toast.makeText(this, getString(R.string.noMoreDataToLoad), Toast.LENGTH_SHORT).show();
         } else {
-            for(BrickSet set : results) {
+            for(BrickSet set : last_results) {
                 sets.add(set);
             }
 

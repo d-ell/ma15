@@ -68,5 +68,7 @@
     <string name="chbx_detail_wish_text">Put on my wishlist</string>
     <string name="logout_toast">Successfully logged out!</string>
     <string name="stop">Stop</string>
+    <string name="noMoreDataToLoad">No more data to load.</string>
+    <string name="notConnected">Not connected.</string>
 
 </resources>

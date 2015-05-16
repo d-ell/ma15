@@ -2,6 +2,7 @@ package ma15.brickcollector.uiTest_espresso;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ListView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.core.AllOf;
+import org.hamcrest.core.Is;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 import java.util.Arrays;
@@ -19,9 +22,13 @@ import ma15.brickcollector.R;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
 import ma15.brickcollector.data.BrickSet;
 
+import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import static android.support.test.espresso.contrib.DrawerMatchers.isOpen;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -31,11 +38,14 @@ import static org.hamcrest.Matchers.is;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 /**
  * Created by thomas on 09.04.15.
  */
 public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
+
+    private static final String TAG = BrowseTest.class.getName();
 
     public BrowseTest() {
         super(MainActivity.class);
@@ -45,6 +55,17 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
     public void setUp() throws Exception {
         super.setUp();
         getActivity();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+
+        DrawerActions.openDrawer(R.id.drawer_layout);
+        onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
+        onData(AllOf.allOf(Is.is(instanceOf(String.class)), Is.is("Browse"))).perform(click());
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
+
+        super.tearDown();
     }
 
     public void testDisabledEnabledSearchButton() {
@@ -90,7 +111,12 @@ public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
         //Espresso.onData(matchString("Batman")).inAdapterView(ViewMatchers.withId(R.id.listview)).atPosition(0).perform(ViewActions.click());
 
-
+        Espresso.pressBack();
+        Espresso.onView(allOf(ViewMatchers.withId(R.id.listview))).
+                check(ViewAssertions.matches(TestHelper.matchBrickSetNameInList("Batman")));
+        Espresso.pressBack();
+        Espresso.onView(withId(R.id.txtQuery))
+                .check(matches(withText("Batman")));
     }
 
 }

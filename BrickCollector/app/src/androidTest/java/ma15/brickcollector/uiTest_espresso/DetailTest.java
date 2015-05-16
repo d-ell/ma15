@@ -1,40 +1,37 @@
 package ma15.brickcollector.uiTest_espresso;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.CloseKeyboardAction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
-import android.widget.ListView;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-
-import org.junit.internal.matchers.TypeSafeMatcher;
-
-import java.util.List;
+import org.hamcrest.core.AllOf;
 
 import ma15.brickcollector.R;
 import ma15.brickcollector.activity.MainActivity;
-import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
-import ma15.brickcollector.data.BrickSet;
 
+import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import static android.support.test.espresso.contrib.DrawerMatchers.isOpen;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 /**
  * Created by thomas on 15.05.15.
  */
 public class DetailTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
+    private static final String TAG = DetailTest.class.getName();
     MainActivity activity;
 
     public DetailTest() {
@@ -45,6 +42,17 @@ public class DetailTest extends ActivityInstrumentationTestCase2<MainActivity> {
     public void setUp() throws Exception {
         super.setUp();
         activity = getActivity();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+
+        DrawerActions.openDrawer(R.id.drawer_layout);
+        onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
+        onData(AllOf.allOf(is(instanceOf(String.class)), is("Browse"))).perform(click());
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
+
+        super.tearDown();
     }
 
     public void testDetailPage() {
@@ -83,6 +91,15 @@ public class DetailTest extends ActivityInstrumentationTestCase2<MainActivity> {
         Espresso.onView(ViewMatchers.withId(R.id.chbx_detail_own)).
                 perform(ViewActions.click(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isNotChecked()));
+
+        Espresso.pressBack();
+        Espresso.onView(allOf(ViewMatchers.withId(R.id.listview))).
+                check(ViewAssertions.matches(TestHelper.matchBrickSetNumberInList("4526")));
+        Espresso.pressBack();
+        Espresso.onView(withId(R.id.txtQuery))
+                .check(matches(withText("4526")));
+
+        LoginTest.doLogout();
 
     }
 }
