@@ -1,4 +1,4 @@
-package ma15.brickcollector.uiTest_espresso;
+package ma15.brickcollector.uiTest;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;

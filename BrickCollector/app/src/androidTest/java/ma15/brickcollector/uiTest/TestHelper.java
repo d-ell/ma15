@@ -1,8 +1,6 @@
-package ma15.brickcollector.uiTest_espresso;
+package ma15.brickcollector.uiTest;
 
-import android.app.Activity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 
 import org.hamcrest.Description;
@@ -10,7 +8,6 @@ import org.hamcrest.Matcher;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +15,6 @@ import java.util.List;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
 import ma15.brickcollector.data.BrickSet;
 
-import static java.util.Collections.swap;
 import static org.hamcrest.Matchers.equalTo;
 
 /**

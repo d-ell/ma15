@@ -1,26 +1,19 @@
-package ma15.brickcollector.uiTest_espresso;
+package ma15.brickcollector.uiTest;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
-import android.widget.ListView;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.core.AllOf;
 import org.hamcrest.core.Is;
-import org.junit.internal.matchers.TypeSafeMatcher;
 
 import java.util.Arrays;
 import java.util.List;
 
 import ma15.brickcollector.activity.MainActivity;
 import ma15.brickcollector.R;
-import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
-import ma15.brickcollector.data.BrickSet;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -32,7 +25,6 @@ import static android.support.test.espresso.contrib.DrawerMatchers.isOpen;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

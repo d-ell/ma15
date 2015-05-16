@@ -1,45 +1,26 @@
-package ma15.brickcollector.uiTest_espresso;
+package ma15.brickcollector.uiTest;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.assertion.ViewAssertions;
-import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import com.android.support.test.deps.guava.base.Predicate;
-import com.android.support.test.deps.guava.base.Predicates;
-
 import junit.framework.Assert;
 
-import org.hamcrest.core.AllOf;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import ma15.brickcollector.R;
 import ma15.brickcollector.activity.ListOnlineFetchedSetsActivity;
-import ma15.brickcollector.activity.MainActivity;
-import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
 import ma15.brickcollector.data.BrickSet;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.contrib.DrawerMatchers.isOpen;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.android.support.test.deps.guava.collect.Range.all;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;

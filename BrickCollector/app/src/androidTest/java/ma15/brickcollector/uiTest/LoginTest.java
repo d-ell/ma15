@@ -1,4 +1,4 @@
-package ma15.brickcollector.uiTest_espresso;
+package ma15.brickcollector.uiTest;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
@@ -8,9 +8,6 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.test.ActivityInstrumentationTestCase2;
 
 import org.hamcrest.core.AllOf;
-
-import java.util.Arrays;
-import java.util.List;
 
 import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.Constants;
