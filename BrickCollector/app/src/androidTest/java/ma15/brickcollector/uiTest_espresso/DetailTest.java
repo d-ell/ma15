@@ -1,6 +1,8 @@
 package ma15.brickcollector.uiTest_espresso;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.CloseKeyboardAction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -14,6 +16,7 @@ import org.hamcrest.Matcher;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 
 import org.junit.internal.matchers.TypeSafeMatcher;
 
@@ -48,7 +51,7 @@ public class DetailTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
         LoginTest.doLogin();
 
-        Espresso.onView(ViewMatchers.withId(R.id.txtQuery)).perform(typeText("4526"));
+        Espresso.onView(ViewMatchers.withId(R.id.txtQuery)).perform(typeText("4526"), closeSoftKeyboard());
 
         Espresso.onView(ViewMatchers.withId(R.id.btnGo)).perform(click());
 
@@ -60,25 +63,25 @@ public class DetailTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
         //test wishlist
         Espresso.onView(ViewMatchers.withId(R.id.chbx_detail_wish)).
-                perform(ViewActions.scrollTo()).
+                perform(ViewActions.scrollTo(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isNotChecked())).
-                perform(ViewActions.click()).
+                perform(ViewActions.click(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isChecked())).
-                perform(ViewActions.click()).
+                perform(ViewActions.click(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isNotChecked()));
 
         //test ownList
         Espresso.onView(ViewMatchers.withId(R.id.chbx_detail_own)).
-                perform(ViewActions.scrollTo()).
+                perform(ViewActions.scrollTo(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isNotChecked())).
-                perform(ViewActions.click()).
+                perform(ViewActions.click(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isChecked()));
 
         Espresso.onView(ViewMatchers.withId(R.id.txt_detail_own_quantity)).
                 check(ViewAssertions.matches(ViewMatchers.withText("1")));
 
         Espresso.onView(ViewMatchers.withId(R.id.chbx_detail_own)).
-                perform(ViewActions.click()).
+                perform(ViewActions.click(), closeSoftKeyboard()).
                 check(ViewAssertions.matches(ViewMatchers.isNotChecked()));
 
     }

@@ -1,6 +1,8 @@
 package ma15.brickcollector.uiTest_espresso;
 
+import android.app.Activity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 
 import org.hamcrest.Description;
