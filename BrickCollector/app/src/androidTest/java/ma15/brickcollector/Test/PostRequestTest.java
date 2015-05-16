@@ -1,4 +1,4 @@
-package ma15.brickcollector.connection;
+package ma15.brickcollector.Test;
 
 import android.test.AndroidTestCase;
 
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.Utils.XmlParser;
+import ma15.brickcollector.connection.PostRequest;
 import ma15.brickcollector.data.BrickSet;
 
 public class PostRequestTest extends AndroidTestCase {

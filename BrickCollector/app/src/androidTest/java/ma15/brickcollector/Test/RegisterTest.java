@@ -1,4 +1,4 @@
-package ma15.brickcollector.connection;
+package ma15.brickcollector.Test;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
