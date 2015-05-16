@@ -1,5 +1,7 @@
 package ma15.brickcollector.uiTest;
 
+import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 import android.widget.ListView;
 
@@ -15,7 +17,11 @@ import java.util.List;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
 import ma15.brickcollector.data.BrickSet;
 
+import static android.support.test.espresso.Espresso.onData;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
 /**
  * Created by dan on 06/05/15.
@@ -102,6 +108,28 @@ public class TestHelper {
                 description.appendText("with content: " + description);
             }
         };
+    }
+
+    public static void drawerTestLoggedIn() {
+        onData(allOf(is(instanceOf(String.class)), is("Browse"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Browse")));
+        onData(allOf(is(instanceOf(String.class)), is("Sets I own"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Sets I own")));
+        onData(allOf(is(instanceOf(String.class)), is("Sets I want"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Sets I want")));
+        onData(allOf(is(instanceOf(String.class)), is("Logout"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Logout")));
+        onData(allOf(is(instanceOf(String.class)), is("Settings"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Settings")));
+    }
+
+    public static void drawerTestLoggedOut() {
+        onData(allOf(is(instanceOf(String.class)), is("Browse"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Browse")));
+        onData(allOf(is(instanceOf(String.class)), is("Login"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Login")));
+        onData(allOf(is(instanceOf(String.class)), is("Settings"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Settings")));
     }
 
     public static Matcher<View> matchBrickSetNameInList(String batman) {

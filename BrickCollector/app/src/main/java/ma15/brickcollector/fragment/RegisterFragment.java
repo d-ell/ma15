@@ -11,10 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -102,7 +99,7 @@ public class RegisterFragment extends Fragment {
             Log.d("onOptionsItemSelected", "yes");
         switch (item.getItemId()) {
             case R.id.action_stop:
-                Toast.makeText(getActivity(), "Action in Register.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.cancelled) + ".", Toast.LENGTH_SHORT).show();
                 webView.stopLoading();
                 show_stop = false;
                 menu.findItem(R.id.action_stop).setVisible(show_stop);
@@ -154,7 +151,7 @@ public class RegisterFragment extends Fragment {
 
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(getActivity(), "Sorry, could not load Register page", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.couldNotLoadRegisterPage), Toast.LENGTH_SHORT).show();
                 is_error = true;
                 mHtml = null;
             }

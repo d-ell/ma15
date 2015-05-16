@@ -72,8 +72,8 @@ public class LoginTest extends ActivityInstrumentationTestCase2<MainActivity> {
         // The drawer should now be open.
         onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
 
-        onData(allOf(is(instanceOf(String.class)), is("Logout"))).
-                check(ViewAssertions.matches(ViewMatchers.withText("Logout")));
+        /*onData(allOf(is(instanceOf(String.class)), is("Logout"))).
+                check(ViewAssertions.matches(ViewMatchers.withText("Logout")));*/
 
         doLogout();
 
@@ -82,6 +82,8 @@ public class LoginTest extends ActivityInstrumentationTestCase2<MainActivity> {
     public static void doLogout() {
 
         DrawerActions.openDrawer(R.id.drawer_layout);
+
+        TestHelper.drawerTestLoggedIn();
 
         //click on Item in NavigationDrawer
         onData(allOf(is(instanceOf(String.class)), is("Logout")))
@@ -102,6 +104,8 @@ public class LoginTest extends ActivityInstrumentationTestCase2<MainActivity> {
         onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
 
         DrawerActions.openDrawer(R.id.drawer_layout);
+
+        TestHelper.drawerTestLoggedOut();
 
         // The drawer should now be open.
         onView(withId(R.id.drawer_layout)).check(matches(isOpen()));

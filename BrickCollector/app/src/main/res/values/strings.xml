@@ -70,5 +70,7 @@
     <string name="stop">Stop</string>
     <string name="noMoreDataToLoad">No more data to load.</string>
     <string name="notConnected">Not connected.</string>
+    <string name="couldNotLoadRegisterPage">Sorry, could not load Register page</string>
+    <string name="cancelled">Cancelled</string>
 
 </resources>
