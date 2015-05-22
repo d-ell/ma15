@@ -11,7 +11,9 @@ import org.hamcrest.core.AllOf;
 
 import ma15.brickcollector.R;
 import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.Utils.UserManager;
 import ma15.brickcollector.activity.MainActivity;
+import ma15.brickcollector.util.TestHelper;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -81,46 +83,52 @@ public class LoginTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     public static void doLogout() {
 
-        DrawerActions.openDrawer(R.id.drawer_layout);
+        //Only logout when logged in
+        if(UserManager.getInstance().checkLogin()) {
+            DrawerActions.openDrawer(R.id.drawer_layout);
 
-        TestHelper.drawerTestLoggedIn();
+            TestHelper.drawerTestLoggedIn();
 
-        //click on Item in NavigationDrawer
-        onData(allOf(is(instanceOf(String.class)), is("Logout")))
-                .perform(click());
+            //click on Item in NavigationDrawer
+            onData(allOf(is(instanceOf(String.class)), is("Logout")))
+                    .perform(click());
 
-        onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
+            onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
 
-        DrawerActions.openDrawer(R.id.drawer_layout);
+            DrawerActions.openDrawer(R.id.drawer_layout);
 
-        // The drawer should now be open.
-        onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
+            // The drawer should now be open.
+            onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
 
-        onData(allOf(is(instanceOf(String.class)), is("Login"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+            onData(allOf(is(instanceOf(String.class)), is("Login"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        }
     }
 
 
     public static void doLogin() {
-        onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
+        //Only login when logged out
+        if(!UserManager.getInstance().checkLogin()) {
+            onView(withId(R.id.drawer_layout)).check(matches(isClosed()));
 
-        DrawerActions.openDrawer(R.id.drawer_layout);
+            DrawerActions.openDrawer(R.id.drawer_layout);
 
-        TestHelper.drawerTestLoggedOut();
+            TestHelper.drawerTestLoggedOut();
 
-        // The drawer should now be open.
-        onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
-
-
-        //click on Item in NavigationDrawer
-        onData(allOf(is(instanceOf(String.class)), is("Login")))
-                .perform(click());
+            // The drawer should now be open.
+            onView(withId(R.id.drawer_layout)).check(matches(isOpen()));
 
 
-        //now do the login stuff
-        onView(withId(R.id.txtUser)).perform(ViewActions.typeText(Constants.TESTUSER_NAME));
-        onView(withId(R.id.txtPassword)).perform(ViewActions.typeText(Constants.TESTUSER_PW));
+            //click on Item in NavigationDrawer
+            onData(allOf(is(instanceOf(String.class)), is("Login")))
+                    .perform(click());
 
-        onView(withId(R.id.btnLogin)).perform(ViewActions.click());
+
+            //now do the login stuff
+            onView(withId(R.id.txtUser)).perform(ViewActions.typeText(Constants.TESTUSER_NAME));
+            onView(withId(R.id.txtPassword)).perform(ViewActions.typeText(Constants.TESTUSER_PW));
+
+            onView(withId(R.id.btnLogin)).perform(ViewActions.click());
+        }
     }
 
     public void testDisabledEnabledSearchButton() {

@@ -3,6 +3,7 @@ package ma15.brickcollector.listener;
 import android.widget.AbsListView;
 
 import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.Utils.Settings;
 import ma15.brickcollector.connection.LoadSets;
 
 public class EndlessScrollListener implements AbsListView.OnScrollListener {
@@ -36,7 +37,7 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
                     "Load page " + (currentPage + 1), Toast.LENGTH_SHORT)
                     .show();*/
 
-            if(totalItemCount != 0 && totalItemCount < Integer.parseInt(Constants.BROWSE_PAGE_SIZE)) {
+            if(totalItemCount != 0 && totalItemCount < Integer.parseInt(Settings.BROWSE_PAGE_SIZE_DEFAULT)) {
                 return;
             }
 

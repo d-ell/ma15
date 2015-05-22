@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.Utils.Settings;
 
 /**
  * Created by thomas on 29.04.15.
@@ -119,7 +120,7 @@ public class PostRequest extends AsyncTask<String, Integer, String> {
         pairs.add(new BasicNameValuePair("owned", owned));
         pairs.add(new BasicNameValuePair("wanted", wanted));
         pairs.add(new BasicNameValuePair("orderBy", ""));
-        pairs.add(new BasicNameValuePair("pageSize", Constants.BROWSE_PAGE_SIZE));
+        pairs.add(new BasicNameValuePair("pageSize", Settings.getPageSize()));
         pairs.add(new BasicNameValuePair("pageNumber", pageNumber));
         pairs.add(new BasicNameValuePair("userName", ""));
 

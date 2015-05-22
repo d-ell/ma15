@@ -1,5 +1,7 @@
 package ma15.brickcollector.Utils;
 
+import android.app.Activity;
+
 public class UserManager {
 
     //private String userHash = "7HFw_bVFYT";
@@ -30,7 +32,11 @@ public class UserManager {
         return userHash;
     }
 
-    public void setUserHash(String userHash) {
+    public void setUserHash(String userHash, Activity activity) {
         this.userHash = userHash;
+
+        if(activity != null) {
+            Settings.saveSettings(activity);
+        }
     }
 }

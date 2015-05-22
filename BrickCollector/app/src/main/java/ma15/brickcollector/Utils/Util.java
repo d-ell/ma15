@@ -1,8 +1,13 @@
 package ma15.brickcollector.Utils;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
 import java.io.InputStream;
 import java.io.OutputStream;
- 
+
+import ma15.brickcollector.fragment.SettingsFragment;
+
 public class Util {
     public static void CopyStream(InputStream is, OutputStream os)
     {

@@ -142,9 +142,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         if(user_hash == null || user_hash.contains(Constants.ERROR) ||
                 user_hash.contains(Constants.INVALID_KEY)) {
             Toast.makeText(getActivity(), "Error: Login was NOT successful",Toast.LENGTH_SHORT).show();
-            UserManager.getInstance().setUserHash(null);
+            UserManager.getInstance().setUserHash(null,getActivity());
         } else {
-            UserManager.getInstance().setUserHash(user_hash);
+            UserManager.getInstance().setUserHash(user_hash,getActivity());
             Toast.makeText(getActivity(), "Login was successful", Toast.LENGTH_SHORT).show();
             ((MainActivity) getActivity()).getmNavigationDrawerFragment().updateDrawerTitles();
             ((MainActivity) getActivity()).getmNavigationDrawerFragment().selectItem(0);

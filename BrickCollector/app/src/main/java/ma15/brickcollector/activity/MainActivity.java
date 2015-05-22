@@ -11,12 +11,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import ma15.brickcollector.R;
+import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.Utils.Settings;
 import ma15.brickcollector.Utils.UserManager;
+import ma15.brickcollector.Utils.Util;
 import ma15.brickcollector.fragment.BrowseFragment;
 import ma15.brickcollector.fragment.LoginFragment;
 import ma15.brickcollector.fragment.NavigationDrawerFragment;
 import ma15.brickcollector.fragment.RegisterFragment;
 import ma15.brickcollector.fragment.SetListFragment;
+import ma15.brickcollector.fragment.SettingsFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -41,6 +45,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Settings.loadSettings(this);
+
         mDrawerTitlesLogin = getResources().getStringArray(R.array.drawer_array_State_Login);
         mDrawerTitlesLogout = getResources().getStringArray(R.array.drawer_array_State_Logout);
 
@@ -75,7 +81,7 @@ public class MainActivity extends ActionBarActivity
                     break;
                 //logout
                 case 3:
-                    UserManager.getInstance().setUserHash(null);
+                    UserManager.getInstance().setUserHash(null,this);
                     Toast.makeText(this,
                             getString(R.string.logout_toast), Toast.LENGTH_SHORT)
                             .show();
@@ -84,8 +90,8 @@ public class MainActivity extends ActionBarActivity
                     return;
                 //Settings
                 case 4:
-                    //break;
-                    return;
+                    fragment = SettingsFragment.newInstance(mDrawerTitlesLogin[position]);
+                    break;
                 default:
                     return;
             }
@@ -104,8 +110,8 @@ public class MainActivity extends ActionBarActivity
                     break;
                 //Settings
                 case 3:
-                    //break;
-                    return;
+                    fragment = SettingsFragment.newInstance(mDrawerTitlesLogin[position]);
+                    break;
                 default:
                     return;
             }

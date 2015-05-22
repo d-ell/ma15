@@ -12,6 +12,7 @@ import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.connection.PostRequest;
 import ma15.brickcollector.data.BrickSet;
+import ma15.brickcollector.util.TestHelper;
 
 public class PostRequestTest extends AndroidTestCase {
 
@@ -37,7 +38,7 @@ public class PostRequestTest extends AndroidTestCase {
     @Test
     public void testCorrectLogin() throws Exception {
 
-        String key = loginAndGetUserHash(Constants.TESTUSER_NAME, Constants.TESTUSER_PW);
+        String key = TestHelper.loginAndGetUserHash(Constants.TESTUSER_NAME, Constants.TESTUSER_PW);
 
         assertEquals("Key is incorrect", Constants.TESTUSER_HASH, key);
     }
@@ -45,7 +46,7 @@ public class PostRequestTest extends AndroidTestCase {
     @Test
     public void testIncorrectLoginWithPassword() throws Exception {
 
-        String key = loginAndGetUserHash(Constants.TESTUSER_NAME, "");
+        String key = TestHelper.loginAndGetUserHash(Constants.TESTUSER_NAME, "");
 
         assertEquals("Login was successful, but should not",
                 Constants.RETURN_STRING_INCORRECT_LOGIN, key);
@@ -54,7 +55,7 @@ public class PostRequestTest extends AndroidTestCase {
     @Test
     public void testIncorrectLoginWithUser() throws Exception {
 
-        String key = loginAndGetUserHash("", Constants.TESTUSER_PW);
+        String key = TestHelper.loginAndGetUserHash("", Constants.TESTUSER_PW);
 
         assertEquals("Login was successful, but should not",
                 Constants.RETURN_STRING_INCORRECT_LOGIN, key);
@@ -63,7 +64,7 @@ public class PostRequestTest extends AndroidTestCase {
     @Test
     public void testIncorrectLoginWithUserAndPassword() throws Exception {
 
-        String key = loginAndGetUserHash("", "");
+        String key = TestHelper.loginAndGetUserHash("", "");
 
         assertEquals("Login was successful, but should not",
                 Constants.RETURN_STRING_INCORRECT_LOGIN, key);
@@ -213,15 +214,5 @@ public class PostRequestTest extends AndroidTestCase {
         String result = postRequest.checkKey("");
         result = XmlParser.getXMLResultString(result);
         assertEquals("Correct API Key but should not", Constants.RETURN_STRING_INCORRECT_KEY, result);
-    }
-
-    private String loginAndGetUserHash(String name, String pw) {
-
-        PostRequest postRequest = new PostRequest(null, null, Constants.LOGIN, null);
-        String result = postRequest.getLogin(name, pw);
-
-        assertNotNull(result);
-
-        return XmlParser.getUserHash(result);
     }
 }

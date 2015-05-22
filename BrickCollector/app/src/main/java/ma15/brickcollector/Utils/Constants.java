@@ -26,12 +26,15 @@ public class Constants {
     public static final String TESTUSER_PW = "bionicle3439";
     public static final String TESTUSER_HASH = "7HFw_bVFYT";
 
+    public static final String TESTUSER1_NAME = "BrickCollector";
+    public static final String TESTUSER1_PW = "castle5999";
+    public static final String TESTUSER1_HASH = "04Eseuv4WT";
+
+
     public static final String API_KEY = "F1PE-3JWB-BwfC";
 
     public static final String ERROR = "ERROR";
     public static final String INVALID_KEY = "INVALIDKEY";
-
-    public static final String BROWSE_PAGE_SIZE = "20";
 
     public static final String RETURN_STRING_INCORRECT_LOGIN = "ERROR: invalid username and/or password";
     public static final String RETURN_STRING_CORRECT_KEY = "OK (v2)";
@@ -42,5 +45,4 @@ public class Constants {
     public static final String RETURN_STRING_SET_REQUEST_INCORRECT_QUANTITY = "ERROR: invalid quantity";
     public static final String RETURN_STRING_SET_REQUEST_INCORRECT_OWN = "ERROR: owned not 0 or 1";
     public static final String RETURN_STRING_SET_REQUEST_INCORRECT_WANT = "ERROR: wanted not 0 or 1";
-
 }

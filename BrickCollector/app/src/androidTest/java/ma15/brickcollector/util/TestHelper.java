@@ -1,4 +1,4 @@
-package ma15.brickcollector.uiTest;
+package ma15.brickcollector.util;
 
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -14,10 +14,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import ma15.brickcollector.Utils.Constants;
+import ma15.brickcollector.Utils.XmlParser;
 import ma15.brickcollector.adapter.OnlineFetchedSetsAdapter;
+import ma15.brickcollector.connection.PostRequest;
 import ma15.brickcollector.data.BrickSet;
 
 import static android.support.test.espresso.Espresso.onData;
+import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
@@ -164,5 +168,15 @@ public class TestHelper {
                 description.appendText("with content: " + description);
             }
         };
+    }
+
+    public static String loginAndGetUserHash(String name, String pw) {
+
+        PostRequest postRequest = new PostRequest(null, null, Constants.LOGIN, null);
+        String result = postRequest.getLogin(name, pw);
+
+        assertNotNull(result);
+
+        return XmlParser.getUserHash(result);
     }
  }

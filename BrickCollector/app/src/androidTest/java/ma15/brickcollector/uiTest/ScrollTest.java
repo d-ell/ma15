@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import ma15.brickcollector.R;
 import ma15.brickcollector.activity.ListOnlineFetchedSetsActivity;
 import ma15.brickcollector.data.BrickSet;
+import ma15.brickcollector.util.TestHelper;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
