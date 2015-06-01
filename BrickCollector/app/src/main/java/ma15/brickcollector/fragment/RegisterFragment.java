@@ -44,6 +44,7 @@ public class RegisterFragment extends Fragment {
     private boolean show_stop = true;
     private boolean is_finished = false;
     private boolean is_error = false;
+    private Activity activity = null;
 
     Menu menu = null;
 
@@ -92,6 +93,7 @@ public class RegisterFragment extends Fragment {
         // acc. to so, enables actionbar items
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        activity = getActivity();
     }
 
     @Override
@@ -99,7 +101,7 @@ public class RegisterFragment extends Fragment {
             Log.d("onOptionsItemSelected", "yes");
         switch (item.getItemId()) {
             case R.id.action_stop:
-                Toast.makeText(getActivity(), getActivity().getString(R.string.cancelled) + ".", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, activity.getString(R.string.cancelled) + ".", Toast.LENGTH_SHORT).show();
                 webView.stopLoading();
                 show_stop = false;
                 menu.findItem(R.id.action_stop).setVisible(show_stop);
@@ -151,7 +153,7 @@ public class RegisterFragment extends Fragment {
 
         webView.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Toast.makeText(getActivity(), getActivity().getString(R.string.couldNotLoadRegisterPage), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, activity.getString(R.string.couldNotLoadRegisterPage), Toast.LENGTH_SHORT).show();
                 is_error = true;
                 mHtml = null;
             }
@@ -163,7 +165,9 @@ public class RegisterFragment extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 show_stop = false;
                 view.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-                getActivity().invalidateOptionsMenu();
+                if(activity != null) {
+                    activity.invalidateOptionsMenu();
+                }
             }
         });
 
@@ -185,30 +189,6 @@ public class RegisterFragment extends Fragment {
         });*/
 
         return view;
-    }
-
-    public void showProgressDialog(final String msg) {
-
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                if (progress == null || !progress.isShowing())
-                    progress = ProgressDialog.show(getActivity(), "Loading", msg);
-            }
-        });
-    }
-    public void hideProgressDialog() {
-        getActivity().runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    if (progress.isShowing())
-                        progress.dismiss();
-                } catch (Throwable e) {
-
-                }
-            }
-        });
     }
 
     @Override

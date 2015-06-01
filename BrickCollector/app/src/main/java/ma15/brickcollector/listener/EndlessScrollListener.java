@@ -33,11 +33,8 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
         }
 
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            /*Toast.makeText(activity,
-                    "Load page " + (currentPage + 1), Toast.LENGTH_SHORT)
-                    .show();*/
 
-            if(totalItemCount != 0 && totalItemCount < Integer.parseInt(Settings.BROWSE_PAGE_SIZE_DEFAULT)) {
+            if(totalItemCount != 0 && totalItemCount < Integer.parseInt(Settings.getPageSize())) {
                 return;
             }
 

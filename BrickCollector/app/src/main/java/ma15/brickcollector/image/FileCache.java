@@ -27,8 +27,9 @@ public class FileCache {
     
     public static FileCache getInstance()
     {
-    	if(instance == null)
-    		return new FileCache();
+    	if(instance == null) {
+            instance = new FileCache();
+        }
     	return instance;
     }
  
@@ -48,5 +49,8 @@ public class FileCache {
             f.delete();
     }
 
+    public final File getCacheDir() {
+        return cacheDir;
+    }
  
 }

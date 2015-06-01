@@ -77,4 +77,6 @@
     <string name="lblKeepLogin">Keep login</string>
     <string name="errorSettingsPageSize">PageSize has to be between 1 and 100!</string>
     <string name="successSettings">Settings saved</string>
+    <string name="couldNotLoadPageSize">Could not set Pagesize.</string>
+    <string name="save">Save</string>
 </resources>

@@ -1,11 +1,14 @@
 package ma15.brickcollector.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -119,6 +122,36 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
             });
 
             //TODO: wird nie aufgerufen, da edittext focus nicht verliert
+            txtOwnQuantity.setImeActionLabel(getString(R.string.save), KeyEvent.KEYCODE_ENTER);
+            txtOwnQuantity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                    if(actionId == EditorInfo.IME_NULL
+                            && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                    {
+                        if(!HTTPDispatcher.isConnected(DetailSetsActivity.this)) {
+                            Toast.makeText(DetailSetsActivity.this,
+                                    "Not connected.", Toast.LENGTH_SHORT)
+                                    .show();
+                            return true;
+                        }
+
+                        ProgressBar progress = (ProgressBar) DetailSetsActivity.this.findViewById(R.id.progressBar);
+
+                        // start asynchronous search => doGetRequest makes callback
+                        // to handleResponse()
+                        HTTPDispatcher dispatcher = new HTTPDispatcher();
+                        new PostRequest(DetailSetsActivity.this, DetailSetsActivity.this, Constants.SET_OWN_QUANTITIY, progress).
+                                execute(UserManager.getInstance().getUserHash(),
+                                        set.getSetID(),
+                                        txtOwnQuantity.getText().toString());
+
+                    }
+                    return false;
+                }
+            });
+            /*
             txtOwnQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -141,7 +174,7 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
                                         txtOwnQuantity.getText().toString());
                     }
                 }
-            });
+            });*/
 
         } else {
             collectionLayout.setVisibility(View.GONE);
@@ -210,13 +243,22 @@ public class DetailSetsActivity extends ActionBarActivity implements Callback {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // app icon in action bar clicked; go home
-                this.finish();
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("set", set);
+        setResult(RESULT_OK, returnIntent);
+        finish();
+    }
+
 
     @Override
     public void handleResponse(String requestMethod, String xml) {

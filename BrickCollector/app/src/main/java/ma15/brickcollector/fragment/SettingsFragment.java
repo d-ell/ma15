@@ -131,6 +131,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                             .show();
                 } else {
                     strPageSize = mPageSize.getText().toString();
+
+                    try {
+                        Integer.parseInt(strPageSize);
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(),
+                                getResources().getString(R.string.couldNotLoadPageSize), Toast.LENGTH_SHORT)
+                                .show();
+                        return;
+                    }
+
                     Settings.setPageSize(strPageSize);
 
                     strKeepLogin = String.valueOf(mKeepLogin.isChecked());

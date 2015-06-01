@@ -28,7 +28,8 @@ import ma15.brickcollector.connection.HTTPDispatcher;
 
 public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements Callback, LoadSets {
 
-	List<BrickSet> sets = null;
+    public static final int CALLBACK_DETAIL_CODE = 1;
+    List<BrickSet> sets = null;
 	ListView list;
 	OnlineFetchedSetsAdapter adapter;
     ArrayList<BrickSet> last_results = new ArrayList<BrickSet>();
@@ -38,6 +39,7 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
     String strYear = null;
     boolean bOwn = false;
     boolean bWant = false;
+    BrickSet selectedBrickSet = new BrickSet();
 
     public ArrayList<BrickSet> getLastResults() {
         return last_results;
@@ -72,12 +74,10 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
-            BrickSet brickSet = null;
             List<BrickSet> tmp = sets;
 
             try {
-                brickSet = tmp.get(position);
+                selectedBrickSet = tmp.get(position);
             } catch (ClassCastException e) {
                 System.out.println("Could not cast!");
                 e.printStackTrace();
@@ -86,11 +86,26 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
             Intent intent = new Intent(getApplicationContext(),
                     DetailSetsActivity.class);
             // sending data to new activity
-            intent.putExtra("set", brickSet);
-            startActivity(intent);
+            intent.putExtra("set", selectedBrickSet);
+            startActivityForResult(intent, CALLBACK_DETAIL_CODE);
 			}
 		});
 	}
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("ListOnlineFetchedSetsActivity", "onActivityResult");
+        if (requestCode == CALLBACK_DETAIL_CODE) {
+            if(resultCode == RESULT_OK){
+                BrickSet set = data.getParcelableExtra("set");
+                selectedBrickSet.setQtyOwned(set.getQtyOwned());
+                selectedBrickSet.setOwned(set.isOwned());
+                selectedBrickSet.setWanted(set.isWanted());
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
