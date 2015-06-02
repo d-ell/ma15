@@ -75,9 +75,9 @@ public class XMLParsertest extends AndroidTestCase {
             "    <largeThumbnailURL>http://images.brickset.com/sets/small/6857-1.jpg</largeThumbnailURL>\n" +
             "    <imageURL>http://images.brickset.com/sets/images/6857-1.jpg</imageURL>\n" +
             "    <bricksetURL>http://brickset.com/sets/6857-1</bricksetURL>\n" +
-            "    <owned>false</owned>\n" +
-            "    <wanted>false</wanted>\n" +
-            "    <qtyOwned>0</qtyOwned>\n" +
+            "    <owned>true</owned>\n" +
+            "    <wanted>true</wanted>\n" +
+            "    <qtyOwned>3</qtyOwned>\n" +
             "    <ACMDataCount>0</ACMDataCount>\n" +
             "    <ownedByTotal>4807</ownedByTotal>\n" +
             "    <wantedByTotal>1532</wantedByTotal>\n" +

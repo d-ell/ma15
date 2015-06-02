@@ -14,14 +14,8 @@ import ma15.brickcollector.activity.ListOnlineFetchedSetsActivity;
 import ma15.brickcollector.data.BrickSet;
 import ma15.brickcollector.util.TestHelper;
 
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.Is.is;
 
 
 public class ListTest extends ActivityInstrumentationTestCase2<ListOnlineFetchedSetsActivity> {
