@@ -48,11 +48,13 @@ public class ImageLoadertest extends AndroidTestCase {
         imageLoader.DisplayImage(url, imageView);
 
         Bitmap bitmap = MemoryCache.getInstance().get(url);
+        assertNotNull(bitmap);
 
         String file = "assets/bitmap.jpg";
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(file);
 
         Bitmap map = BitmapFactory.decodeStream(in);
+        assertNotNull(map);
         assertTrue(map.sameAs(bitmap));
     }
 

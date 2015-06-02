@@ -3,9 +3,6 @@ package ma15.brickcollector.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by dan on 31/03/15.
- */
 public class BrickSet implements Parcelable {
     private String setID = "";
     private String number = "";

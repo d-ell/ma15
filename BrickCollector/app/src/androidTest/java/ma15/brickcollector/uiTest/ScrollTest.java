@@ -28,9 +28,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-/**
- * Created by thomas on 09.04.15.
- */
 public class ScrollTest extends ActivityInstrumentationTestCase2<ListOnlineFetchedSetsActivity> {
 
     private static final String TAG = ScrollTest.class.getName();

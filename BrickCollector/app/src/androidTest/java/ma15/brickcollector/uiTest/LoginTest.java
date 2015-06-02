@@ -31,9 +31,6 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-/**
- * Created by thomas on 04.05.15.
- */
 public class LoginTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final String TAG = LoginTest.class.getName();

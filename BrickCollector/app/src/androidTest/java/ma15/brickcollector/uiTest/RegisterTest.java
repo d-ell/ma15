@@ -25,9 +25,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 
-/**
- * Created by thomas on 09.04.15.
- */
 public class RegisterTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final String TAG = RegisterTest.class.getName();

@@ -13,9 +13,6 @@ import ma15.brickcollector.activity.MainActivity;
 import ma15.brickcollector.fragment.BrowseFragment;
 import ma15.brickcollector.fragment.RegisterFragment;
 
-/**
- * Created by dan on 06/05/15.
- */
 public class RegisterTest extends ActivityInstrumentationTestCase2<MainActivity> {
     private MainActivity mActivity;
 

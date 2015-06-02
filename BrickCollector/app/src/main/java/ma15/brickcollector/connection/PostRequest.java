@@ -25,10 +25,6 @@ import java.util.List;
 import ma15.brickcollector.Utils.Constants;
 import ma15.brickcollector.Utils.Settings;
 
-/**
- * Created by thomas on 29.04.15.
- */
-// <Params, Progress, Result>
 public class PostRequest extends AsyncTask<String, Integer, String> {
 
     final static String TAG = PostRequest.class.getName();

@@ -30,9 +30,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-/**
- * Created by thomas on 15.05.15.
- */
+
 public class DetailTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final String TAG = DetailTest.class.getName();

@@ -33,9 +33,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-/**
- * Created by thomas on 09.04.15.
- */
 public class BrowseTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final String TAG = BrowseTest.class.getName();

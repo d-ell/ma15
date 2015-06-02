@@ -93,7 +93,7 @@ public class ListOnlineFetchedSetsActivity extends ActionBarActivity implements 
 	}
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("ListOnlineFetchedSetsActivity", "onActivityResult");
+        //Log.d("ListOnlineFetchedSetsActivity", "onActivityResult");
         if (requestCode == CALLBACK_DETAIL_CODE) {
             if(resultCode == RESULT_OK){
                 BrickSet set = data.getParcelableExtra("set");
