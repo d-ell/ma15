@@ -48,6 +48,7 @@ public class ImageLoadertest extends AndroidTestCase {
         imageLoader.DisplayImage(url, imageView);
 
         Bitmap bitmap = MemoryCache.getInstance().get(url);
+        Thread.sleep(1000);
         assertNotNull(bitmap);
 
         String file = "assets/bitmap.jpg";
