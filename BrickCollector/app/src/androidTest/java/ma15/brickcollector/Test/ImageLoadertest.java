@@ -47,8 +47,9 @@ public class ImageLoadertest extends AndroidTestCase {
 
         imageLoader.DisplayImage(url, imageView);
 
+        Thread.sleep(2000);
+
         Bitmap bitmap = MemoryCache.getInstance().get(url);
-        Thread.sleep(1000);
         assertNotNull(bitmap);
 
         String file = "assets/bitmap.jpg";
@@ -68,7 +69,10 @@ public class ImageLoadertest extends AndroidTestCase {
 
         imageLoader.DisplayImage(url, imageView);
 
+        Thread.sleep(2000);
+
         Bitmap bitmap = MemoryCache.getInstance().get(url);
+        assertNotNull(bitmap);
 
         String file = "assets/invalidBitmap.jpg";
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(file);
